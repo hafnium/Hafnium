@@ -111,21 +111,6 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 		initGUI();
 	}
 	
-	private void createNavigationElement(ToolBar bar, ToolItem T, String activeFile, String inactiveFile)
-	{			
-		try {		
-			T.setImage(ImageLoader.load(this.getDisplay(), activeFile));
-		} catch (Exception e){
-			System.err.println(e.getMessage());
-		}
-		
-		try {	
-			T.setDisabledImage(ImageLoader.load(this.getDisplay(), inactiveFile));
-		} catch (Exception e){
-			System.err.println(e.getMessage());
-		}
-	}
-	
 	/**
 	* Initializes the GUI.
 	*/
@@ -372,6 +357,7 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 		
 		currentWeatherTemperature.setText("" + localWeather.getTemperature() + degreeSymbol + "F");    
 		currentWeatherIcon.setImage(localWeather.getCurrentImage(this.getDisplay()));
+		currentWeatherAdditional.setText("chance of precipitation: " + localWeather.getPrecipitation() + "%");
 	}
 	
 	/**

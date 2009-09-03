@@ -13,6 +13,7 @@ public class LocalWeather
 {
 	private String zipcode;
 	private String queryURL;
+	private int precipitationPercentage;
 	private Document dom;
 	
 	private int temperature;
@@ -62,6 +63,11 @@ public class LocalWeather
 		return this.temperature;
 	}
 	
+	public int getPrecipitation()
+	{
+		return this.precipitationPercentage;
+	}
+	
 	public void parseWeatherXML()
 	{
 		dom = XMLParser.parseXmlFile(queryURL);
@@ -79,6 +85,36 @@ public class LocalWeather
 					this.temperature = Integer.parseInt(cc.item(i).getTextContent());
 				if (cc.item(i).getNodeName() == "icon")
 					this.iconPointer = Integer.parseInt(cc.item(i).getTextContent());
+			}
+		}
+		
+		Element dayf = (Element) (doc.getElementsByTagName("dayf")).item(0);
+		NodeList day = (dayf.getElementsByTagName("day")).item(0).getChildNodes();
+		if(day != null && day.getLength() > 0) 
+		{		
+			boolean useDay = true;
+			for (int i = 0; i < day.getLength(); i++)
+			{
+				if (day.item(i).getNodeName() == "hi")
+				{
+					useDay = day.item(i).getTextContent() == "N/A" ? false : true;
+					break;
+				}
+			}
+			
+			NodeList part = ((Element) (dayf.getElementsByTagName("day")).item(0)).getElementsByTagName("part");
+			if(part != null && part.getLength() > 0) 
+			{		
+				for (int i = 0; i < part.getLength(); i++)
+				{
+					if (((Element) part.item(i)).getAttribute("p") == "d" && useDay)
+					{
+						precipitationPercentage = Integer.parseInt(((Element) part.item(i)).getElementsByTagName("ppcp").item(0).getTextContent());
+					} else
+					{
+						precipitationPercentage = Integer.parseInt(((Element) part.item(i)).getElementsByTagName("ppcp").item(0).getTextContent());
+					}
+				}
 			}
 		}
 	}
