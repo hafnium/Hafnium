@@ -121,12 +121,15 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 		home.setOwner(HafniumFileLoader.loadOwner("myHome.xml"));
 		home.setLocation(HafniumFileLoader.loadLocation("myHome.xml"));
 		initGUI();
+		
+		home.getComponents().get(0).draw();
 	}
 	
 	/**
 	* Initializes the GUI.
 	*/
-	private void initGUI() {
+	private void initGUI() 
+	{
 		try {
 			this.setBackground(SWTResourceManager.getColor(192, 192, 192));
 			FormLayout thisLayout = new FormLayout();

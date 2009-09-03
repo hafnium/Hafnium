@@ -77,11 +77,10 @@ public abstract class HomeComponent
 	{
 		this.serialNumber = serialNumber;
 		this.make = make;
-		this.model = model;
-		initGUI( );
+		this.model = model;		
 	}
 	
-	public void initGUI( )
+	public void draw( )
 	{
 		FormData mainContentContainerLData = new FormData();
 		mainContentContainerLData.width = 640;
