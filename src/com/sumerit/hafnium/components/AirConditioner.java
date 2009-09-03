@@ -12,10 +12,9 @@ public abstract class AirConditioner extends ClimateComponent
 	private enum CondensorState {OPERATIONAL, PARTIALLY_FROZEN, FROZEN};
 	private CondensorState condensorState;
 	
-	public AirConditioner(Composite parent, int style)
+	public AirConditioner()
 	{
-		super(parent, style);
-		initGUI();
+		super();
 	}
 	
 	/**
@@ -24,9 +23,9 @@ public abstract class AirConditioner extends ClimateComponent
 	 * @param make
 	 * @param model
 	 */
-	public AirConditioner(Composite parent, int style, int serialNumber, String make, String model) 
+	public AirConditioner(int serialNumber, String make, String model) 
 	{
-		super(parent, style, serialNumber, make, model);
+		super(serialNumber, make, model);
 	}
 	
 	/**

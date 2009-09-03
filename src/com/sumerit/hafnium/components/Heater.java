@@ -13,9 +13,9 @@ public abstract class Heater extends ClimateComponent
 	 * @param make
 	 * @param model
 	 */
-	public Heater(Composite parent, int style, int serialNumber, String make, String model) 
+	public Heater(int serialNumber, String make, String model) 
 	{
-		super(parent, style, serialNumber, make, model);
+		super(serialNumber, make, model);
 	}
 	
 	/**

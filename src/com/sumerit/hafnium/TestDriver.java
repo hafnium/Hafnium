@@ -116,7 +116,7 @@ public class TestDriver implements Runnable, ActionListener
 		
 		if (true)
 		{
-			myAC = new YorkAirConditioner(new Shell(Display.getDefault( ), SWT.NO_TRIM), SWT.NULL, 128, "ES354");		
+			myAC = new YorkAirConditioner(128, "Sakai", "ES354");		
 			myAC.addChangeTemperatureListener(this);
 			
 			myHeater = new RuddHeater(128, "Optiply 2000");

@@ -121,7 +121,8 @@ public class HafniumFileLoader
 
 		HomeComponent component = null;
 		try {
-			component = (HomeComponent) Class.forName(type).newInstance();
+			Class C = Class.forName(type);
+			component = (HomeComponent) C.newInstance();
 			component.initialize(serial, make, model);
 		} catch (Exception e)
 		{

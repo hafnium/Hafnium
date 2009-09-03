@@ -13,6 +13,7 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
@@ -32,6 +33,7 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Event;
 
+import com.sumerit.hafnium.components.HomeComponent;
 import com.sumerit.hafnium.components.RuddHeater;
 import com.sumerit.hafnium.components.YorkAirConditioner;
 import com.sumerit.hafnium.ui.NavigationBar;
@@ -88,6 +90,8 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 	private Composite mainContentContainer;
 	private NavigationBar navigation;
 	
+	private static Display display;
+	
 	private Home home;
 	
 	private YorkAirConditioner myAC;
@@ -99,13 +103,21 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 		//handle the obtaining and disposing of resources
 		SWTResourceManager.registerResourceUser(this);
 	}
+	
+	public static Device getGlobalDisplay()
+	{
+		return TestUI.display;
+	}
 
 	public TestUI(Composite parent, int style) 
 	{
 		super(parent, style);
 		
+		HomeComponent.display = this.getDisplay();
+		HomeComponent.mainComposite = this;
+		
 		home = new Home();
-		//home.setComponents(HafniumFileLoader.loadComponents("myHome.xml"));
+		home.setComponents(HafniumFileLoader.loadComponents("myHome.xml"));
 		home.setOwner(HafniumFileLoader.loadOwner("myHome.xml"));
 		home.setLocation(HafniumFileLoader.loadLocation("myHome.xml"));
 		initGUI();
@@ -276,8 +288,8 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 					ambientTemperatureLabel.setAlignment(SWT.CENTER);
 				}
 				{
-					myAC = new YorkAirConditioner(mainContentContainer, SWT.NONE, 128, "ES354");
-					myAC.setBounds(60, 200, 640, 180);
+					myAC = new YorkAirConditioner(128, "Sakai", "ES354");
+					//myAC.setBounds(60, 200, 640, 180);
 				}
 			}
 			
@@ -372,7 +384,7 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 	*/
 	public static void main(String[] args) 
 	{
-		Display display = Display.getDefault();
+		display = Display.getDefault();
 		Shell shell = new Shell(display, SWT.NO_TRIM);
 		shell.setBackgroundMode(SWT.INHERIT_DEFAULT);
 		TestUI inst = new TestUI(shell, SWT.NULL);

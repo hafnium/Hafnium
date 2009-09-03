@@ -5,6 +5,7 @@ import java.util.logging.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Button;
@@ -12,6 +13,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import com.cloudgarden.resource.SWTResourceManager;
+import com.sumerit.hafnium.TestUI;
 
 
 /**
@@ -35,14 +37,8 @@ import com.cloudgarden.resource.SWTResourceManager;
  * @author Sean Arietta
  * 
  */
-public abstract class HomeComponent extends org.eclipse.swt.widgets.Composite
+public abstract class HomeComponent
 {
-
-	{
-		//Register as a resource user - SWTResourceManager will
-		//handle the obtaining and disposing of resources
-		SWTResourceManager.registerResourceUser(this);
-	}
 	
 	public static enum LogLevel {SEVERE, WARNING, INFO, CONFIG, FINE, FINER, FINEST };
 	
@@ -65,13 +61,11 @@ public abstract class HomeComponent extends org.eclipse.swt.widgets.Composite
 	private Label powerLabel;
 	private Button powerButton;
 	private Label powerValue;
-	protected Composite mainContentContainer;
 	
-	public HomeComponent(Composite parent, int style)
-	{
-		super(parent, style);
-		initGUI();
-	}
+	public static Composite mainComposite;
+	public static Device display;
+	
+	public HomeComponent(){}
 	
 	/**
 	 * 
@@ -79,9 +73,8 @@ public abstract class HomeComponent extends org.eclipse.swt.widgets.Composite
 	 * @param make
 	 * @param model
 	 */
-	public HomeComponent(Composite parent, int style, int serialNumber, String make, String model)
+	public HomeComponent(int serialNumber, String make, String model)
 	{
-		super(parent, style);
 		this.serialNumber = serialNumber;
 		this.make = make;
 		this.model = model;
@@ -95,48 +88,45 @@ public abstract class HomeComponent extends org.eclipse.swt.widgets.Composite
 		mainContentContainerLData.height = 180;
 		mainContentContainerLData.left =  new FormAttachment(0, 1000, 190);
 		mainContentContainerLData.top =  new FormAttachment(0, 1000, 120);
-		mainContentContainer = new Composite(this, SWT.NONE);
-		mainContentContainer.setLayout(null);
-		mainContentContainer.setLayoutData(mainContentContainerLData);
-		mainContentContainer.setBackground(SWTResourceManager.getColor(255, 255, 255));
+
 		{
-			powerLabel = new Label(this, SWT.NONE);
+			powerLabel = new Label(HomeComponent.mainComposite, SWT.NONE);
 			powerLabel.setText("Power:");
 			powerLabel.setBounds(98, 45, 61, 23);
 			powerLabel.setFont(SWTResourceManager.getFont("Gill Sans MT", 12, 1, false, false));
 		}
 		{
-			powerValue = new Label(this, SWT.NONE);
+			powerValue = new Label(HomeComponent.mainComposite, SWT.NONE);
 			powerValue.setText("Off");
 			powerValue.setBounds(171, 45, 29, 23);
 			powerValue.setFont(SWTResourceManager.getFont("Gill Sans MT",12,1,false,false));
 			powerValue.setForeground(SWTResourceManager.getColor(255,0,0));
 		}
 		{
-			nameLabel = new Label(this, SWT.NONE);
+			nameLabel = new Label(HomeComponent.mainComposite, SWT.NONE);
 			nameLabel.setText(make);
 			nameLabel.setBounds(86, 1, 313, 32);
 			nameLabel.setFont(SWTResourceManager.getFont("Gill Sans MT",16,1,false,false));
 		}
 		{
-			climateIcons = new Label(this, SWT.NONE);
+			climateIcons = new Label(HomeComponent.mainComposite, SWT.NONE);
 			climateIcons.setBounds(0, 0, 60, 180);
 		}
 		{
-			energyValues = new Label(this, SWT.NONE);
+			energyValues = new Label(HomeComponent.mainComposite, SWT.NONE);
 			energyValues.setText("0 W/hr");
 			energyValues.setBounds(335, 104, 64, 25);
 			energyValues.setFont(SWTResourceManager.getFont("Gill Sans MT",12,1,false,false));
 			energyValues.setForeground(SWTResourceManager.getColor(128,128,128));
 		}
 		{
-			energyLabel = new Label(this, SWT.NONE);
+			energyLabel = new Label(HomeComponent.mainComposite, SWT.NONE);
 			energyLabel.setText("Current Energy Consumption:");
 			energyLabel.setBounds(98, 104, 231, 25);
 			energyLabel.setFont(SWTResourceManager.getFont("Gill Sans MT",12,1,false,false));
 		}
 		{
-			powerButton = new Button(this, SWT.PUSH | SWT.CENTER);
+			powerButton = new Button(HomeComponent.mainComposite, SWT.PUSH | SWT.CENTER);
 			powerButton.setText("Turn On");
 			powerButton.setBounds(488, 150, 112, 30);
 			powerButton.setFont(SWTResourceManager.getFont("Gill Sans MT",16,1,false,false));
@@ -146,7 +136,6 @@ public abstract class HomeComponent extends org.eclipse.swt.widgets.Composite
 				}
 			});
 		}
-		pack();
 	}
 	
 	public void initialize(int serialNumber, String make, String model)

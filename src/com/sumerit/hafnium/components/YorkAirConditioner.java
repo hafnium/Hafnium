@@ -11,15 +11,15 @@ import com.sumerit.hafnium.util.ImageLoader;
 
 
 public class YorkAirConditioner extends AirConditioner {
-
-	public YorkAirConditioner(Composite parent, int style)
+	
+	public YorkAirConditioner()
 	{
-		super(parent, style);
+		super();
 	}
 	
-	public YorkAirConditioner(Composite parent, int style, int serialNumber, String model) 
+	public YorkAirConditioner(int serialNumber, String make, String model) 
 	{
-		super(parent, style, serialNumber, "York", model);
+		super(serialNumber, "York " + make, model);
 	}
 
 	public void powerOff() 
@@ -40,7 +40,7 @@ public class YorkAirConditioner extends AirConditioner {
 	public void setIcon() 
 	{
 		iconLabel = new Label(mainContentContainer, SWT.NONE);
-		iconLabel.setImage(ImageLoader.load(this.getDisplay(), "resources/componentIcons/YorkES354.png"));
+		iconLabel.setImage(ImageLoader.load(HomeComponent.display, "resources/componentIcons/YorkES354.png"));
 	}	
 
 }

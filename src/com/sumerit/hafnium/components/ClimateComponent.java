@@ -46,11 +46,10 @@ public abstract class ClimateComponent extends HomeComponent implements ActionLi
 	private Label sliderLabel;
 	private Slider temperatureSlider;
 	private Label adjustTemperatureLabel;
-	
-	public ClimateComponent(Composite parent, int style)
+
+	public ClimateComponent()
 	{
-		super(parent, style);
-		initGUI();
+		super();
 	}
 	
 	/**
@@ -59,13 +58,12 @@ public abstract class ClimateComponent extends HomeComponent implements ActionLi
 	 * @param make
 	 * @param model
 	 */
-	public ClimateComponent(Composite parent, int style, int serialNumber, String make, String model) 
+	public ClimateComponent(int serialNumber, String make, String model) 
 	{
-		super(parent, style, serialNumber, make, model);	
+		super(serialNumber, make, model);
 		ambientTemperature = 70.0f;
 		temperatureController = new InternalTemperatureDevice();
 		temperatureController.addActionListener(this);
-		initGUI( );
 	}
 	
 	public void initGUI( )
@@ -75,7 +73,7 @@ public abstract class ClimateComponent extends HomeComponent implements ActionLi
 		mainContentContainerLData.height = 180;
 		mainContentContainerLData.left =  new FormAttachment(0, 1000, 190);
 		mainContentContainerLData.top =  new FormAttachment(0, 1000, 120);
-		mainContentContainer = new Composite(this, SWT.NONE);
+		mainContentContainer = new Composite(HomeComponent.mainComposite, SWT.NONE);
 		mainContentContainer.setLayout(null);
 		mainContentContainer.setLayoutData(mainContentContainerLData);
 		mainContentContainer.setBackground(SWTResourceManager.getColor(255, 255, 255));
@@ -87,7 +85,7 @@ public abstract class ClimateComponent extends HomeComponent implements ActionLi
 		}
 		{
 			temperatureValue = new Label(mainContentContainer, SWT.NONE);
-			temperatureValue.setText("70º");
+			temperatureValue.setText("70ï¿½");
 			temperatureValue.setBounds(335, 74, 64, 24);
 			temperatureValue.setForeground(SWTResourceManager.getColor(128, 128, 128));
 			temperatureValue.setFont(SWTResourceManager.getFont("Gill Sans MT", 12, 1, false, false));
@@ -118,7 +116,6 @@ public abstract class ClimateComponent extends HomeComponent implements ActionLi
 			adjustTemperatureLabel.setBounds(465, 104, 155, 25);
 			adjustTemperatureLabel.setFont(SWTResourceManager.getFont("Gill Sans MT", 12, 1, false, false));
 		}
-		pack( );
 	}
 	
 	/**

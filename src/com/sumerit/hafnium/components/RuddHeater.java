@@ -11,7 +11,7 @@ public class RuddHeater extends Heater
 {
 	public RuddHeater(int serialNumber, String model) 
 	{
-		super(new Shell(Display.getDefault( ), SWT.NO_TRIM), SWT.NULL, serialNumber, "Rudd", model);
+		super(serialNumber, "Rudd", model);
 	}
 	
 	public void powerOff() 
@@ -32,7 +32,7 @@ public class RuddHeater extends Heater
 	public void setIcon() 
 	{
 		iconLabel = new Label(mainContentContainer, SWT.NONE);
-		iconLabel.setImage(ImageLoader.load(this.getDisplay(), "resources/componentIcons/YorkES354.png"));
+		iconLabel.setImage(ImageLoader.load(HomeComponent.display, "resources/componentIcons/YorkES354.png"));
 	}	
 
 }
