@@ -13,10 +13,11 @@ public class LocalWeather
 {
 	private String zipcode;
 	private String queryURL;
+	private String highTemperature;
+	private int temperature;
 	private int precipitationPercentage;
 	private Document dom;
 	
-	private int temperature;
 	private int iconPointer = -1;
 	
 	private final String queryURLPrefix = "http://xoap.weather.com/weather/local/";
@@ -63,6 +64,11 @@ public class LocalWeather
 		return this.temperature;
 	}
 	
+	public String getHighTemperature()
+	{
+		return this.highTemperature;
+	}
+	
 	public int getPrecipitation()
 	{
 		return this.precipitationPercentage;
@@ -95,24 +101,32 @@ public class LocalWeather
 			boolean useDay = true;
 			for (int i = 0; i < day.getLength(); i++)
 			{
-				if (day.item(i).getNodeName() == "hi")
+				if (day.item(i).getNodeName().compareTo("hi") == 0)
 				{
-					useDay = day.item(i).getTextContent() == "N/A" ? false : true;
+					System.out.println(day.item(i).getTextContent());
+					useDay = day.item(i).getTextContent().compareTo("N/A") == 0 ? false : true;
+					highTemperature =(day.item(i).getTextContent());
 					break;
 				}
 			}
+			
+			System.out.println("Use Day? " + useDay);
 			
 			NodeList part = ((Element) (dayf.getElementsByTagName("day")).item(0)).getElementsByTagName("part");
 			if(part != null && part.getLength() > 0) 
 			{		
 				for (int i = 0; i < part.getLength(); i++)
 				{
-					if (((Element) part.item(i)).getAttribute("p") == "d" && useDay)
+					System.out.print(((Element) part.item(i)).getAttribute("p") + ": ");
+					System.out.println(((Element) part.item(i)).getElementsByTagName("ppcp").item(0).getTextContent());				
+					if (((Element) part.item(i)).getAttribute("p").compareTo("d") == 0 && useDay)
 					{
 						precipitationPercentage = Integer.parseInt(((Element) part.item(i)).getElementsByTagName("ppcp").item(0).getTextContent());
-					} else
+						break;
+					} else if (((Element) part.item(i)).getAttribute("p").compareTo("n") == 0)
 					{
 						precipitationPercentage = Integer.parseInt(((Element) part.item(i)).getElementsByTagName("ppcp").item(0).getTextContent());
+						break;
 					}
 				}
 			}

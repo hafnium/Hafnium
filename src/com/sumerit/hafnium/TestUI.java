@@ -92,7 +92,7 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 	
 	private YorkAirConditioner myAC;
 	private RuddHeater myHeater;
-	private String degreeSymbol = "º";
+	private String degreeSymbol = new String(Character.toChars(176));
 	
 	{
 		//Register as a resource user - SWTResourceManager will
@@ -213,7 +213,7 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 				{
 					temperatureValues = new Label[1];
 					temperatureValues[0] = new Label(mainContentContainer, SWT.NONE);
-					temperatureValues[0].setText("70º");
+					temperatureValues[0].setText("70ï¿½");
 					temperatureValues[0].setBounds(383, 258, 64, 24);
 					temperatureValues[0].setForeground(SWTResourceManager.getColor(128, 128, 128));
 					temperatureValues[0].setFont(SWTResourceManager.getFont("Gill Sans MT", 12, 1, false, false));
@@ -305,7 +305,7 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 				}
 				{
 					currentWeatherTemperature = new Label(sideBarContainer, SWT.NONE);
-					currentWeatherTemperature.setBounds(63, 160, 60, 43);
+					currentWeatherTemperature.setBounds(17, 160, 160, 43);
 					currentWeatherTemperature.setFont(SWTResourceManager.getFont("Gill Sans MT", 24, 1, false, false));
 					currentWeatherTemperature.setForeground(SWTResourceManager.getColor(51, 51, 51));
 					currentWeatherTemperature.setAlignment(SWT.CENTER);
@@ -357,7 +357,7 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 		
 		currentWeatherTemperature.setText("" + localWeather.getTemperature() + degreeSymbol + "F");    
 		currentWeatherIcon.setImage(localWeather.getCurrentImage(this.getDisplay()));
-		currentWeatherAdditional.setText("chance of precipitation: " + localWeather.getPrecipitation() + "%");
+		currentWeatherAdditional.setText("Today's High: " + localWeather.getHighTemperature() + "\nPrecipitation: " + localWeather.getPrecipitation() + "%");
 	}
 	
 	/**
