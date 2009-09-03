@@ -1,5 +1,7 @@
 package com.sumerit.hafnium.components;
 
+import org.eclipse.swt.widgets.Composite;
+
 /**
  * Class that all air conditioners should extend. Provides functionality to set the temperature.
  * @author Sean Arietta
@@ -10,7 +12,10 @@ public abstract class AirConditioner extends ClimateComponent
 	private enum CondensorState {OPERATIONAL, PARTIALLY_FROZEN, FROZEN};
 	private CondensorState condensorState;
 	
-	public AirConditioner(){}
+	public AirConditioner()
+	{
+		super();
+	}
 	
 	/**
 	 * Create an AC device with the provided serial number, make, and model

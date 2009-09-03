@@ -1,5 +1,7 @@
 package com.sumerit.hafnium.components;
 
+import org.eclipse.swt.widgets.Composite;
+
 public abstract class Heater extends ClimateComponent 
 {
 	private enum ExchangerState {OPERATIONAL, OVERHEATED};
@@ -38,5 +40,4 @@ public abstract class Heater extends ClimateComponent
 		
 		super.setTemperature(targetTemperature);			
 	}	
-
 }

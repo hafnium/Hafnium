@@ -13,6 +13,7 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
@@ -32,6 +33,7 @@ import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Event;
 
+import com.sumerit.hafnium.components.HomeComponent;
 import com.sumerit.hafnium.components.RuddHeater;
 import com.sumerit.hafnium.components.YorkAirConditioner;
 import com.sumerit.hafnium.ui.NavigationBar;
@@ -88,33 +90,46 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 	private Composite mainContentContainer;
 	private NavigationBar navigation;
 	
+	private static Display display;
+	
 	private Home home;
 	
 	private YorkAirConditioner myAC;
 	private RuddHeater myHeater;
-	private String degreeSymbol = "º";
+	private String degreeSymbol = new String(Character.toChars(176));
 	
 	{
 		//Register as a resource user - SWTResourceManager will
 		//handle the obtaining and disposing of resources
 		SWTResourceManager.registerResourceUser(this);
 	}
+	
+	public static Device getGlobalDisplay()
+	{
+		return TestUI.display;
+	}
 
 	public TestUI(Composite parent, int style) 
 	{
 		super(parent, style);
-		myAC = new YorkAirConditioner(128, "ES354");
+		
+		HomeComponent.display = this.getDisplay();
+		HomeComponent.mainComposite = this;
+		
 		home = new Home();
 		home.setComponents(HafniumFileLoader.loadComponents("myHome.xml"));
 		home.setOwner(HafniumFileLoader.loadOwner("myHome.xml"));
 		home.setLocation(HafniumFileLoader.loadLocation("myHome.xml"));
 		initGUI();
+		
+		home.getComponents().get(0).draw();
 	}
 	
 	/**
 	* Initializes the GUI.
 	*/
-	private void initGUI() {
+	private void initGUI() 
+	{
 		try {
 			this.setBackground(SWTResourceManager.getColor(192, 192, 192));
 			FormLayout thisLayout = new FormLayout();
@@ -172,7 +187,9 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 					}					
 					mainNavigation.pack();
 				}
-				{
+				
+				
+				/*{
 					climateIcons = new Label[1];
 					climateIcons[0] = new Label(mainContentContainer, SWT.NONE);
 					climateIcons[0].setBounds(49, 185, 58, 178);
@@ -213,7 +230,7 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 				{
 					temperatureValues = new Label[1];
 					temperatureValues[0] = new Label(mainContentContainer, SWT.NONE);
-					temperatureValues[0].setText("70º");
+					temperatureValues[0].setText("70ï¿½");
 					temperatureValues[0].setBounds(383, 258, 64, 24);
 					temperatureValues[0].setForeground(SWTResourceManager.getColor(128, 128, 128));
 					temperatureValues[0].setFont(SWTResourceManager.getFont("Gill Sans MT", 12, 1, false, false));
@@ -263,7 +280,7 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 							powerButtonsMouseDown(evt, 0);
 						}
 					});
-				}
+				}*/
 				{
 					ambientTemperatureLabel = new Label(mainContentContainer, SWT.NONE);
 					ambientTemperatureLabel.setText("Ambient Temperature: 0ï¿½");
@@ -272,6 +289,10 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 					ambientTemperatureLabel.setForeground(SWTResourceManager.getColor(255, 255, 255));
 					ambientTemperatureLabel.setFont(SWTResourceManager.getFont("Gill Sans MT", 18, 1, false, false));
 					ambientTemperatureLabel.setAlignment(SWT.CENTER);
+				}
+				{
+					myAC = new YorkAirConditioner(128, "Sakai", "ES354");
+					//myAC.setBounds(60, 200, 640, 180);
 				}
 			}
 			
@@ -305,7 +326,7 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 				}
 				{
 					currentWeatherTemperature = new Label(sideBarContainer, SWT.NONE);
-					currentWeatherTemperature.setBounds(63, 160, 60, 43);
+					currentWeatherTemperature.setBounds(17, 160, 160, 43);
 					currentWeatherTemperature.setFont(SWTResourceManager.getFont("Gill Sans MT", 24, 1, false, false));
 					currentWeatherTemperature.setForeground(SWTResourceManager.getColor(51, 51, 51));
 					currentWeatherTemperature.setAlignment(SWT.CENTER);
@@ -357,7 +378,7 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 		
 		currentWeatherTemperature.setText("" + localWeather.getTemperature() + degreeSymbol + "F");    
 		currentWeatherIcon.setImage(localWeather.getCurrentImage(this.getDisplay()));
-		currentWeatherAdditional.setText("chance of precipitation: " + localWeather.getPrecipitation() + "%");
+		currentWeatherAdditional.setText("Today's High: " + localWeather.getHighTemperature() + "\nPrecipitation: " + localWeather.getPrecipitation() + "%");
 	}
 	
 	/**
@@ -366,7 +387,7 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 	*/
 	public static void main(String[] args) 
 	{
-		Display display = Display.getDefault();
+		display = Display.getDefault();
 		Shell shell = new Shell(display, SWT.NO_TRIM);
 		shell.setBackgroundMode(SWT.INHERIT_DEFAULT);
 		TestUI inst = new TestUI(shell, SWT.NULL);
