@@ -103,9 +103,9 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 	public TestUI(Composite parent, int style) 
 	{
 		super(parent, style);
-		myAC = new YorkAirConditioner(128, "ES354");
+		
 		home = new Home();
-		home.setComponents(HafniumFileLoader.loadComponents("myHome.xml"));
+		//home.setComponents(HafniumFileLoader.loadComponents("myHome.xml"));
 		home.setOwner(HafniumFileLoader.loadOwner("myHome.xml"));
 		home.setLocation(HafniumFileLoader.loadLocation("myHome.xml"));
 		initGUI();
@@ -172,7 +172,9 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 					}					
 					mainNavigation.pack();
 				}
-				{
+				
+				
+				/*{
 					climateIcons = new Label[1];
 					climateIcons[0] = new Label(mainContentContainer, SWT.NONE);
 					climateIcons[0].setBounds(49, 185, 58, 178);
@@ -263,7 +265,7 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 							powerButtonsMouseDown(evt, 0);
 						}
 					});
-				}
+				}*/
 				{
 					ambientTemperatureLabel = new Label(mainContentContainer, SWT.NONE);
 					ambientTemperatureLabel.setText("Ambient Temperature: 0�");
@@ -272,6 +274,10 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 					ambientTemperatureLabel.setForeground(SWTResourceManager.getColor(255, 255, 255));
 					ambientTemperatureLabel.setFont(SWTResourceManager.getFont("Gill Sans MT", 18, 1, false, false));
 					ambientTemperatureLabel.setAlignment(SWT.CENTER);
+				}
+				{
+					myAC = new YorkAirConditioner(mainContentContainer, SWT.NONE, 128, "ES354");
+					myAC.setBounds(60, 200, 640, 180);
 				}
 			}
 			
