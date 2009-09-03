@@ -20,7 +20,7 @@ public class LocalWeather
 	private int iconPointer = -1;
 	
 	private final String queryURLPrefix = "http://xoap.weather.com/weather/local/";
-	private final String queryURLSuffix = "?cc=*&dayf=2&link=xoap&prod=xoap&par=1136215722&key=071fe28af7d57072";
+	private final String queryURLSuffix = "?cc=*&dayf=1&link=xoap&prod=xoap&par=1136215722&key=071fe28af7d57072";
 	
 	
 	public LocalWeather(String zipcode)
@@ -110,7 +110,7 @@ public class LocalWeather
 					if (((Element) part.item(i)).getAttribute("p") == "d" && useDay)
 					{
 						precipitationPercentage = Integer.parseInt(((Element) part.item(i)).getElementsByTagName("ppcp").item(0).getTextContent());
-					} else
+					} else if (((Element) part.item(i)).getAttribute("p") == "n")
 					{
 						precipitationPercentage = Integer.parseInt(((Element) part.item(i)).getElementsByTagName("ppcp").item(0).getTextContent());
 					}
