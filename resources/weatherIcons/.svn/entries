@@ -1,0 +1,119 @@
+8
+
+dir
+289
+svn+ssh://simba/home/sean/Repo/School/CS%206240/hafnium/resources/weatherIcons
+svn+ssh://simba/home/sean/Repo/School
+
+
+
+2009-08-30T22:11:52.029567Z
+269
+Sean Arietta
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+f70d20a6-e694-432f-a1f4-231f641065cf
+
+sunny.png
+file
+
+
+
+
+2009-09-01T18:15:47.000000Z
+e47548ce2710d0db8d154670d40f23c3
+2009-08-30T22:11:52.029567Z
+269
+Sean Arietta
+has-props
+
+sunny.gif
+file
+
+
+
+
+2009-09-01T18:15:47.000000Z
+a7bac13c4be8a8475ff0885f6cdfbdf9
+2009-08-30T22:11:52.029567Z
+269
+Sean Arietta
+has-props
+
+thunderstorm.png
+file
+
+
+
+
+2009-09-01T18:15:47.000000Z
+befbce773d892b8c45f81aa4570ee408
+2009-08-30T22:11:52.029567Z
+269
+Sean Arietta
+has-props
+
+cloudy.png
+file
+
+
+
+
+2009-09-01T18:15:47.000000Z
+ff37c87bc75d7d02fd1eb2cad5ebe0d4
+2009-08-30T22:11:52.029567Z
+269
+Sean Arietta
+has-props
+
+snow.png
+file
+
+
+
+
+2009-09-01T18:15:47.000000Z
+1a5944ba11eb4fdb26b16aed1d634a77
+2009-08-30T22:11:52.029567Z
+269
+Sean Arietta
+has-props
+
+rain.png
+file
+
+
+
+
+2009-09-01T18:15:47.000000Z
+5bfcaa5e3ad51c433f0ef56d1f71b51f
+2009-08-30T22:11:52.029567Z
+269
+Sean Arietta
+has-props
+
+partlyCloudy.png
+file
+
+
+
+
+2009-09-01T18:15:47.000000Z
+ff37c87bc75d7d02fd1eb2cad5ebe0d4
+2009-08-30T22:11:52.029567Z
+269
+Sean Arietta
+has-props
+

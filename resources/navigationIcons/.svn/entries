@@ -1,0 +1,158 @@
+8
+
+dir
+289
+svn+ssh://simba/home/sean/Repo/School/CS%206240/hafnium/resources/navigationIcons
+svn+ssh://simba/home/sean/Repo/School
+
+
+
+2009-08-30T22:11:52.029567Z
+269
+Sean Arietta
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+f70d20a6-e694-432f-a1f4-231f641065cf
+
+hvac_active.png
+file
+
+
+
+
+2009-09-01T18:15:46.000000Z
+11ecaac8b8ebd0f7b28ceb47b1744f56
+2009-08-30T22:11:52.029567Z
+269
+Sean Arietta
+has-props
+
+entertainment_inactive.png
+file
+
+
+
+
+2009-09-01T18:15:46.000000Z
+a743e1cd930923b3db353815af146a3a
+2009-08-30T22:11:52.029567Z
+269
+Sean Arietta
+has-props
+
+lighting_active.png
+file
+
+
+
+
+2009-09-01T18:15:46.000000Z
+8b55ccf9bd73a8d8c17d0a1a0f550aa8
+2009-08-30T22:11:52.029567Z
+269
+Sean Arietta
+has-props
+
+appliances_inactive.png
+file
+
+
+
+
+2009-09-01T18:15:46.000000Z
+81a6f54dab025d3179dc708b04b6e4a8
+2009-08-30T22:11:52.029567Z
+269
+Sean Arietta
+has-props
+
+security_active.png
+file
+
+
+
+
+2009-09-01T18:15:46.000000Z
+af43b5a084c6826da6c3124bad097a12
+2009-08-30T22:11:52.029567Z
+269
+Sean Arietta
+has-props
+
+hvac_inactive.png
+file
+
+
+
+
+2009-09-01T18:15:46.000000Z
+adc83639a254911bb586ac182e710da5
+2009-08-30T22:11:52.029567Z
+269
+Sean Arietta
+has-props
+
+lighting_inactive.png
+file
+
+
+
+
+2009-09-01T18:15:46.000000Z
+a6cf1a6b94a1bbfd5cc473efbf8859ab
+2009-08-30T22:11:52.029567Z
+269
+Sean Arietta
+has-props
+
+entertainment_active.png
+file
+
+
+
+
+2009-09-01T18:15:46.000000Z
+7d5b966942df18cee1c52af197a4ee31
+2009-08-30T22:11:52.029567Z
+269
+Sean Arietta
+has-props
+
+security_inactive.png
+file
+
+
+
+
+2009-09-01T18:15:46.000000Z
+07dffff4a78ce601f75ffefbd7877b75
+2009-08-30T22:11:52.029567Z
+269
+Sean Arietta
+has-props
+
+appliances_active.png
+file
+
+
+
+
+2009-09-01T18:15:46.000000Z
+2abae57062830ffc709373f40f72fd08
+2009-08-30T22:11:52.029567Z
+269
+Sean Arietta
+has-props
+
