@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Home>
+  <Owner name="Sean Arietta" customerID="HA1342-242" />
+  <Location city="Charlottesville" state="VA" zipcode="22903" />
+
+  <HomeComponent class="com.sumerit.hafnium.components.YorkAirConditioner">
+        <SerialNumber>000128000</SerialNumber>
+        <Make>Sakai</Make>
+        <Model>ES-3457</Model>
+   </HomeComponent>
+    
+</Home>
