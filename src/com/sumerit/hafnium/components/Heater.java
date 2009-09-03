@@ -1,5 +1,7 @@
 package com.sumerit.hafnium.components;
 
+import org.eclipse.swt.widgets.Composite;
+
 public abstract class Heater extends ClimateComponent 
 {
 	private enum ExchangerState {OPERATIONAL, OVERHEATED};
@@ -11,9 +13,9 @@ public abstract class Heater extends ClimateComponent
 	 * @param make
 	 * @param model
 	 */
-	public Heater(int serialNumber, String make, String model) 
+	public Heater(Composite parent, int style, int serialNumber, String make, String model) 
 	{
-		super(serialNumber, make, model);
+		super(parent, style, serialNumber, make, model);
 	}
 	
 	/**
