@@ -28,11 +28,4 @@ public class RuddHeater extends Heater
 		this.isPoweredOn = true;
 	}
 
-	@Override
-	public void setIcon() 
-	{
-		iconLabel = new Label(mainContentContainer, SWT.NONE);
-		iconLabel.setImage(ImageLoader.load(HomeComponent.display, "resources/componentIcons/YorkES354.png"));
-	}	
-
 }

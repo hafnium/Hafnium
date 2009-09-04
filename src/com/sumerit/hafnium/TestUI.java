@@ -22,6 +22,8 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -97,7 +99,8 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 	private YorkAirConditioner myAC;
 	private RuddHeater myHeater;
 	private String degreeSymbol = new String(Character.toChars(176));
-	
+	private Composite componentContainer;
+
 	{
 		//Register as a resource user - SWTResourceManager will
 		//handle the obtaining and disposing of resources
@@ -112,17 +115,11 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 	public TestUI(Composite parent, int style) 
 	{
 		super(parent, style);
-		
-		HomeComponent.display = this.getDisplay();
-		HomeComponent.mainComposite = this;
+	
 		
 		home = new Home();
-		home.setComponents(HafniumFileLoader.loadComponents("myHome.xml"));
-		home.setOwner(HafniumFileLoader.loadOwner("myHome.xml"));
 		home.setLocation(HafniumFileLoader.loadLocation("myHome.xml"));
 		initGUI();
-		
-		home.getComponents().get(0).draw();
 	}
 	
 	/**
@@ -188,99 +185,105 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 					mainNavigation.pack();
 				}
 				
-				
-				/*{
-					climateIcons = new Label[1];
-					climateIcons[0] = new Label(mainContentContainer, SWT.NONE);
-					climateIcons[0].setBounds(49, 185, 58, 178);
-					climateIcons[0].setImage(ImageLoader.load(this.getDisplay(), "resources/componentIcons/YorkES354.png"));
-				}
 				{
-					climateLabels = new Label(mainContentContainer, SWT.NONE);
-					climateLabels.setText("Sakai Standing Air Conditioner");
-					climateLabels.setBounds(134, 185, 313, 32);
-					climateLabels.setFont(SWTResourceManager.getFont("Gill Sans MT", 16, 1, false, false));
-				}
-				{
-					powerLabel = new Label(mainContentContainer, SWT.NONE);
-					powerLabel.setText("Power:");
-					powerLabel.setBounds(146, 229, 61, 23);
-					powerLabel.setFont(SWTResourceManager.getFont("Gill Sans MT", 12, 1, false, false));
-				}
-				{
-					temperatureLabel = new Label(mainContentContainer, SWT.NONE);
-					temperatureLabel.setText("Current Temperature Setting:");
-					temperatureLabel.setBounds(146, 258, 231, 24);
-					temperatureLabel.setFont(SWTResourceManager.getFont("Gill Sans MT", 12, 1, false, false));
-				}
-				{
-					energyLabel = new Label(mainContentContainer, SWT.NONE);
-					energyLabel.setText("Current Energy Consumption:");
-					energyLabel.setBounds(146, 288, 231, 25);
-					energyLabel.setFont(SWTResourceManager.getFont("Gill Sans MT", 12, 1, false, false));
-				}
-				{
-					powerValues = new Label[1];
-					powerValues[0] = new Label(mainContentContainer, SWT.NONE);
-					powerValues[0].setText("Off");
-					powerValues[0].setBounds(219, 229, 29, 23);
-					powerValues[0].setFont(SWTResourceManager.getFont("Gill Sans MT", 12, 1, false, false));
-					powerValues[0].setForeground(SWTResourceManager.getColor(255, 0, 0));
-				}
-				{
-					temperatureValues = new Label[1];
-					temperatureValues[0] = new Label(mainContentContainer, SWT.NONE);
-					temperatureValues[0].setText("70�");
-					temperatureValues[0].setBounds(383, 258, 64, 24);
-					temperatureValues[0].setForeground(SWTResourceManager.getColor(128, 128, 128));
-					temperatureValues[0].setFont(SWTResourceManager.getFont("Gill Sans MT", 12, 1, false, false));
-				}
-				{
-					energyValues = new Label[1];
-					energyValues[0] = new Label(mainContentContainer, SWT.NONE);
-					energyValues[0].setText("0 W/hr");
-					energyValues[0].setBounds(383, 288, 64, 25);
-					energyValues[0].setFont(SWTResourceManager.getFont("Gill Sans MT", 12, 1, false, false));
-					energyValues[0].setForeground(SWTResourceManager.getColor(128, 128, 128));
-				}
-				{
-					temperatureSlider = new Slider(mainContentContainer, SWT.NONE);
-					temperatureSlider.setBounds(495, 258, 192, 24);
-					temperatureSlider.setMinimum(30);
-					temperatureSlider.setMaximum(80);
-					temperatureSlider.setIncrement(1);
-					temperatureSlider.setSelection(70);
-					temperatureSlider.setThumb(1);
-					temperatureSlider.addMouseListener(new MouseAdapter() {
-						public void mouseUp(MouseEvent evt) {
-							temperatureSliderMouseUp(evt);
-						}
-					});
-				}
-				{
-					sliderLabel = new Label(mainContentContainer, SWT.NONE);
-					sliderLabel.setText("30    40    50    60    70    80");
-					sliderLabel.setBounds(509, 235, 170, 17);
-					sliderLabel.setFont(SWTResourceManager.getFont("Gill Sans MT", 10, 1, false, false));
-				}
-				{
-					adjustTemperatureLabel = new Label(mainContentContainer, SWT.NONE);
-					adjustTemperatureLabel.setText("Adjust Temperature");
-					adjustTemperatureLabel.setBounds(513, 288, 155, 25);
-					adjustTemperatureLabel.setFont(SWTResourceManager.getFont("Gill Sans MT", 12, 1, false, false));
-				}
-				{
-					powerButtons = new Button[1];
-					powerButtons[0] = new Button(mainContentContainer, SWT.PUSH | SWT.CENTER);
-					powerButtons[0].setText("Turn On");
-					powerButtons[0].setBounds(535, 333, 112, 30);
-					powerButtons[0].setFont(SWTResourceManager.getFont("Gill Sans MT", 16, 1, false, false));
-					powerButtons[0].addMouseListener(new MouseAdapter() {
-						public void mouseDown(MouseEvent evt) {
-							powerButtonsMouseDown(evt, 0);
-						}
-					});
-				}*/
+					componentContainer = new Composite(mainContentContainer, SWT.NONE);
+					componentContainer.setLayout(null);
+					componentContainer.setBounds(44, 179, 753, 199);
+					{
+						climateIcons = new Label[1];
+						climateIcons[0] = new Label(componentContainer, SWT.NONE);
+						climateIcons[0].setBounds(5, 13, 58, 178);
+						climateIcons[0].setBackground(SWTResourceManager.getColor(128, 0, 128));
+						climateIcons[0].setImage(ImageLoader.load(this.getDisplay(), "resources/componentIcons/YorkES354.png"));
+					}
+					{
+						climateLabels = new Label(componentContainer, SWT.NONE);
+						climateLabels.setText("Sakai Standing Air Conditioner");
+						climateLabels.setBounds(80, 13, 313, 32);
+						climateLabels.setFont(SWTResourceManager.getFont("Gill Sans MT", 16, 1, false, false));
+					}
+
+					{
+						powerLabel = new Label(componentContainer, SWT.NONE);
+						powerLabel.setText("Power:");
+						powerLabel.setBounds(80, 57, 60, 23);
+						powerLabel.setFont(SWTResourceManager.getFont("Gill Sans MT", 12, 1, false, false));
+					}
+					{
+						temperatureLabel = new Label(componentContainer, SWT.NONE);
+						temperatureLabel.setText("Current Temperature Setting:");
+						temperatureLabel.setBounds(80, 107, 231, 27);
+						temperatureLabel.setFont(SWTResourceManager.getFont("Gill Sans MT", 12, 1, false, false));
+					}
+					{
+						energyLabel = new Label(componentContainer, SWT.NONE);
+						energyLabel.setText("Current Energy Consumption:");
+						energyLabel.setBounds(80, 82, 229, 24);
+						energyLabel.setFont(SWTResourceManager.getFont("Gill Sans MT", 12, 1, false, false));
+					}
+					{
+						powerValues = new Label[1];
+						powerValues[0] = new Label(componentContainer, SWT.NONE);
+						powerValues[0].setText("Off");
+						powerValues[0].setBounds(144, 57, 29, 19);
+						powerValues[0].setFont(SWTResourceManager.getFont("Gill Sans MT", 12, 1, false, false));
+						powerValues[0].setForeground(SWTResourceManager.getColor(255, 0, 0));
+					}
+					{
+						temperatureValues = new Label[1];
+						temperatureValues[0] = new Label(componentContainer, SWT.NONE);
+						temperatureValues[0].setText("70�");
+						temperatureValues[0].setBounds(316, 109, 64, 23);
+						temperatureValues[0].setForeground(SWTResourceManager.getColor(128, 128, 128));
+						temperatureValues[0].setFont(SWTResourceManager.getFont("Gill Sans MT", 12, 1, false, false));
+					}
+					{
+						energyValues = new Label[1];
+						energyValues[0] = new Label(componentContainer, SWT.NONE);
+						energyValues[0].setText("0 W/hr");
+						energyValues[0].setBounds(313, 82, 68, 27);
+						energyValues[0].setFont(SWTResourceManager.getFont("Gill Sans MT", 12, 1, false, false));
+						energyValues[0].setForeground(SWTResourceManager.getColor(128, 128, 128));
+					}
+					{
+						temperatureSlider = new Slider(componentContainer, SWT.NONE);
+						temperatureSlider.setBounds(488, 58, 192, 24);
+						temperatureSlider.setMinimum(30);
+						temperatureSlider.setMaximum(80);
+						temperatureSlider.setIncrement(1);
+						temperatureSlider.setSelection(70);
+						temperatureSlider.setThumb(1);
+						temperatureSlider.addMouseListener(new MouseAdapter() {
+							public void mouseUp(MouseEvent evt) {
+								temperatureSliderMouseUp(evt);
+							}
+						});
+					}
+					{
+						sliderLabel = new Label(componentContainer, SWT.NONE);
+						sliderLabel.setText("30    40    50    60    70    80");
+						sliderLabel.setBounds(498, 38, 170, 16);
+						sliderLabel.setFont(SWTResourceManager.getFont("Gill Sans MT", 10, 1, false, false));
+					}
+					{
+						adjustTemperatureLabel = new Label(componentContainer, SWT.NONE);
+						adjustTemperatureLabel.setText("Adjust Temperature");
+						adjustTemperatureLabel.setBounds(510, 88, 155, 25);
+						adjustTemperatureLabel.setFont(SWTResourceManager.getFont("Gill Sans MT", 12, 1, false, false));
+					}
+					{
+						powerButtons = new Button[1];
+						powerButtons[0] = new Button(componentContainer, SWT.PUSH | SWT.CENTER);
+						powerButtons[0].setText("Turn On");
+						powerButtons[0].setBounds(535, 141, 112, 30);
+						powerButtons[0].setFont(SWTResourceManager.getFont("Gill Sans MT", 16, 1, false, false));
+						powerButtons[0].addMouseListener(new MouseAdapter() {
+							public void mouseDown(MouseEvent evt) {
+								powerButtonsMouseDown(evt, 0);
+							}
+						});
+					}
+				}				
 				{
 					ambientTemperatureLabel = new Label(mainContentContainer, SWT.NONE);
 					ambientTemperatureLabel.setText("Ambient Temperature: 0�");
@@ -289,7 +292,7 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 					ambientTemperatureLabel.setForeground(SWTResourceManager.getColor(255, 255, 255));
 					ambientTemperatureLabel.setFont(SWTResourceManager.getFont("Gill Sans MT", 18, 1, false, false));
 					ambientTemperatureLabel.setAlignment(SWT.CENTER);
-				}
+				}				
 				{
 					myAC = new YorkAirConditioner(128, "Sakai", "ES354");
 					//myAC.setBounds(60, 200, 640, 180);

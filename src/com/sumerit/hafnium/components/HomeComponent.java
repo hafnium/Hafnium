@@ -5,15 +5,13 @@ import java.util.logging.Logger;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.graphics.Device;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import com.cloudgarden.resource.SWTResourceManager;
-import com.sumerit.hafnium.TestUI;
+import com.sumerit.hafnium.util.ImageLoader;
 
 
 /**
@@ -53,17 +51,16 @@ public abstract class HomeComponent
 	private int serialNumber;
 	private String make = "";
 	private String model;
-	private Label climateIcons;
 	private Label energyLabel;
-	private Label energyValues;
+	private Label energyValue;
 	private Label nameLabel;
 	protected Label iconLabel;
 	private Label powerLabel;
 	private Button powerButton;
 	private Label powerValue;
+	private Label icon;
 	
-	public static Composite mainComposite;
-	public static Device display;
+	protected Composite componentContainer;
 	
 	public HomeComponent(){}
 	
@@ -80,54 +77,66 @@ public abstract class HomeComponent
 		this.model = model;		
 	}
 	
-	public void draw( )
+	public void add(Composite mainContentContainer, Point position)
 	{
-		FormData mainContentContainerLData = new FormData();
-		mainContentContainerLData.width = 640;
-		mainContentContainerLData.height = 180;
-		mainContentContainerLData.left =  new FormAttachment(0, 1000, 190);
-		mainContentContainerLData.top =  new FormAttachment(0, 1000, 120);
+		componentContainer = new Composite(mainContentContainer, SWT.NONE);
+		componentContainer.setLayout(null);
+		componentContainer.setBounds(position.x, position.y, 753, 199);
 
+		// STATIC:: Icon
 		{
-			powerLabel = new Label(HomeComponent.mainComposite, SWT.NONE);
+			icon = new Label(componentContainer, SWT.NONE);
+			icon.setBounds(5, 13, 58, 178);
+			icon.setImage(ImageLoader.load(mainContentContainer.getDisplay(), "resources/componentIcons/"+make+model+".png"));
+		}
+		
+		// STATIC:: Power
+		{
+			powerLabel = new Label(componentContainer, SWT.NONE);
 			powerLabel.setText("Power:");
-			powerLabel.setBounds(98, 45, 61, 23);
+			powerLabel.setBounds(80, 57, 60, 23);
 			powerLabel.setFont(SWTResourceManager.getFont("Gill Sans MT", 12, 1, false, false));
 		}
+		
+		// Power = {On | Off} 
 		{
-			powerValue = new Label(HomeComponent.mainComposite, SWT.NONE);
+			powerValue = new Label(componentContainer, SWT.NONE);
 			powerValue.setText("Off");
-			powerValue.setBounds(171, 45, 29, 23);
+			powerValue.setBounds(144, 57, 29, 19);
 			powerValue.setFont(SWTResourceManager.getFont("Gill Sans MT",12,1,false,false));
 			powerValue.setForeground(SWTResourceManager.getColor(255,0,0));
 		}
+		
+		// STATIC:: Name of this component
 		{
-			nameLabel = new Label(HomeComponent.mainComposite, SWT.NONE);
-			nameLabel.setText(make);
-			nameLabel.setBounds(86, 1, 313, 32);
+			nameLabel = new Label(componentContainer, SWT.NONE);
+			nameLabel.setText(make + " " + model);
+			nameLabel.setBounds(80, 13, 313, 32);
 			nameLabel.setFont(SWTResourceManager.getFont("Gill Sans MT",16,1,false,false));
-		}
+		}		
+		
+		// STATIC:: Energy Consumption
 		{
-			climateIcons = new Label(HomeComponent.mainComposite, SWT.NONE);
-			climateIcons.setBounds(0, 0, 60, 180);
-		}
-		{
-			energyValues = new Label(HomeComponent.mainComposite, SWT.NONE);
-			energyValues.setText("0 W/hr");
-			energyValues.setBounds(335, 104, 64, 25);
-			energyValues.setFont(SWTResourceManager.getFont("Gill Sans MT",12,1,false,false));
-			energyValues.setForeground(SWTResourceManager.getColor(128,128,128));
-		}
-		{
-			energyLabel = new Label(HomeComponent.mainComposite, SWT.NONE);
+			energyLabel = new Label(componentContainer, SWT.NONE);
 			energyLabel.setText("Current Energy Consumption:");
-			energyLabel.setBounds(98, 104, 231, 25);
+			energyLabel.setBounds(80, 82, 229, 24);
 			energyLabel.setFont(SWTResourceManager.getFont("Gill Sans MT",12,1,false,false));
 		}
+		
+		// Energy = [0,MAX] kW/hr
 		{
-			powerButton = new Button(HomeComponent.mainComposite, SWT.PUSH | SWT.CENTER);
+			energyValue = new Label(componentContainer, SWT.NONE);
+			energyValue.setText("0 kW/hr");
+			energyValue.setBounds(313, 82, 68, 27);
+			energyValue.setFont(SWTResourceManager.getFont("Gill Sans MT",12,1,false,false));
+			energyValue.setForeground(SWTResourceManager.getColor(128,128,128));
+		}
+		
+		// BUTTON:: {PowerOn | PowerOff}
+		{
+			powerButton = new Button(componentContainer, SWT.PUSH | SWT.CENTER);
 			powerButton.setText("Turn On");
-			powerButton.setBounds(488, 150, 112, 30);
+			powerButton.setBounds(535, 141, 112, 30);
 			powerButton.setFont(SWTResourceManager.getFont("Gill Sans MT",16,1,false,false));
 			powerButton.addMouseListener(new MouseAdapter() {
 				public void mouseDown(MouseEvent evt) {
@@ -240,7 +249,7 @@ public abstract class HomeComponent
 	 */
 	public abstract void powerOff();	
 	
-	public abstract void setIcon( );
+	public void setIcon(){}
 	
 	private void powerButtonMouseDown(MouseEvent evt, int index) 
 	{

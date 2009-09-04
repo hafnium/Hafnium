@@ -15,12 +15,15 @@ public class ImageLoader
 	{
 		File file = new File(path);
 		FileInputStream fis = null;
+		ImageData imageData = null;
+		Image image = null;
 		try {
 			fis = new FileInputStream(file);
+			imageData = new ImageData(fis);
+			image = new Image(device, imageData);
 		} catch (FileNotFoundException e) {
 			System.err.println("Could not open file " + path);
 		}
-		ImageData imageData = new ImageData(fis);
-		return new Image(device, imageData);
+		return image;
 	}
 }

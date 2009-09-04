@@ -68,54 +68,6 @@ public abstract class ClimateComponent extends HomeComponent implements ActionLi
 	
 	public void initGUI( )
 	{
-		FormData mainContentContainerLData = new FormData();
-		mainContentContainerLData.width = 640;
-		mainContentContainerLData.height = 180;
-		mainContentContainerLData.left =  new FormAttachment(0, 1000, 190);
-		mainContentContainerLData.top =  new FormAttachment(0, 1000, 120);
-		mainContentContainer = new Composite(HomeComponent.mainComposite, SWT.NONE);
-		mainContentContainer.setLayout(null);
-		mainContentContainer.setLayoutData(mainContentContainerLData);
-		mainContentContainer.setBackground(SWTResourceManager.getColor(255, 255, 255));
-		{
-			temperatureLabel = new Label(mainContentContainer, SWT.NONE);
-			temperatureLabel.setText("Current Temperature Setting:");
-			temperatureLabel.setBounds(98, 74, 231, 24);
-			temperatureLabel.setFont(SWTResourceManager.getFont("Gill Sans MT", 12, 1, false, false));
-		}
-		{
-			temperatureValue = new Label(mainContentContainer, SWT.NONE);
-			temperatureValue.setText("70�");
-			temperatureValue.setBounds(335, 74, 64, 24);
-			temperatureValue.setForeground(SWTResourceManager.getColor(128, 128, 128));
-			temperatureValue.setFont(SWTResourceManager.getFont("Gill Sans MT", 12, 1, false, false));
-		}
-		{
-			temperatureSlider = new Slider(mainContentContainer, SWT.NONE);
-			temperatureSlider.setBounds(447, 74, 193, 24);
-			temperatureSlider.setMinimum(30);
-			temperatureSlider.setMaximum(80);
-			temperatureSlider.setIncrement(1);
-			temperatureSlider.setSelection(70);
-			temperatureSlider.setThumb(1);
-			temperatureSlider.addMouseListener(new MouseAdapter() {
-				public void mouseUp(MouseEvent evt) {
-					temperatureSliderMouseUp(evt);
-				}
-			});
-		}
-		{
-			sliderLabel = new Label(mainContentContainer, SWT.NONE);
-			sliderLabel.setText("30    40    50    60    70    80");
-			sliderLabel.setBounds(461, 51, 170, 17);
-			sliderLabel.setFont(SWTResourceManager.getFont("Gill Sans MT", 10, 1, false, false));
-		}
-		{
-			adjustTemperatureLabel = new Label(mainContentContainer, SWT.NONE);
-			adjustTemperatureLabel.setText("Adjust Temperature");
-			adjustTemperatureLabel.setBounds(465, 104, 155, 25);
-			adjustTemperatureLabel.setFont(SWTResourceManager.getFont("Gill Sans MT", 12, 1, false, false));
-		}
 	}
 	
 	/**

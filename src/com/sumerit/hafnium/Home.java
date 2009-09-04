@@ -3,6 +3,7 @@ package com.sumerit.hafnium;
 import java.util.Vector;
 
 import com.sumerit.hafnium.components.HomeComponent;
+import com.sumerit.hafnium.util.HafniumFileLoader;
 
 public class Home 
 {	
@@ -12,6 +13,13 @@ public class Home
 	private Location location;
 	
 	public Home(){}
+	
+	public Home(String path)
+	{
+		this.owner = HafniumFileLoader.loadOwner(path);
+		this.location = HafniumFileLoader.loadLocation(path);
+		this.components = HafniumFileLoader.loadComponents(path);
+	}
 	
 	public void setComponents(Vector<HomeComponent> components)
 	{
