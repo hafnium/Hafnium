@@ -123,6 +123,8 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 		initGUI();
 		
 		home.getComponents().get(0).draw();
+		
+		this.pack();
 	}
 	
 	/**
