@@ -1,6 +1,7 @@
 package com.sumerit.hafnium.util;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.Vector;
 
 import org.w3c.dom.Document;
@@ -14,7 +15,7 @@ import com.sumerit.hafnium.components.HomeComponent;
 public class HafniumFileLoader 
 {
 
-	public static Vector<HomeComponent> loadComponents(String path)
+	public static HashMap<String, Vector<HomeComponent>> loadComponents(String path)
 	{
 		File file = new File(path);
 		
@@ -73,9 +74,9 @@ public class HafniumFileLoader
 		}
 	}
 	
-	private static Vector<HomeComponent> getHomeComponents(Document dom)
+	private static HashMap<String, Vector<HomeComponent>> getHomeComponents(Document dom)
 	{
-		Vector<HomeComponent> components = new Vector<HomeComponent>();
+		HashMap<String, Vector<HomeComponent>> components = new HashMap<String, Vector<HomeComponent>>();
 		
 		//get the root elememt
 		Element docEle = dom.getDocumentElement();
@@ -90,17 +91,14 @@ public class HafniumFileLoader
 				Element el = (Element)nl.item(i);
 				
 				//get the Employee object
-				HomeComponent component = getHomeComponent(el);
-				
-				//add it to list
-				components.add(component);
+				getHomeComponent(el, components);
 			}
 		}
 		
 		return components;
 	}
 	
-	private static HomeComponent getHomeComponent(Element element) 
+	private static void getHomeComponent(Element element, HashMap<String, Vector<HomeComponent>> components) 
 	{
 		
 		//for each <employee> element get text or int values of 
@@ -108,6 +106,7 @@ public class HafniumFileLoader
 		int serial = XMLParser.getIntValue(element,"SerialNumber");
 
 		String type = element.getAttribute("class");
+		String category = element.getAttribute("category");
 		
 		//Create a new Employee with the value read from the xml nodes
 
@@ -121,6 +120,10 @@ public class HafniumFileLoader
 			System.out.println("Could not load object of type " + type + " from XML file\nERROR: " + e.getMessage());
 		}
 		
-		return component;
+		if(!components.containsKey(category))
+			components.put(category, new Vector<HomeComponent>());
+		
+		components.get(category).add(component);
+			
 	}		
 }

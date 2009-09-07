@@ -16,6 +16,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 
+import com.sumerit.hafnium.components.ClimateComponent;
 import com.sumerit.hafnium.ui.NavigationBar;
 import com.sumerit.hafnium.util.ImageLoader;
 import com.sumerit.hafnium.util.LocalWeather;
@@ -73,15 +74,15 @@ public class UI extends org.eclipse.swt.widgets.Composite {
 		initGUI();
 		
 		// Add this home's components to the UI
-		home.getComponents().get(0).add(this.mainContentContainer, new Point(44, 179));
+		home.getComponents().get("hvac").get(0).add(this.mainContentContainer, new Point(44, 179));
 		
 		this.pack();
 	}
 	
 	public void update()
 	{
-		if (home.getTemperatureComponent() != null)
-			this.ambientTemperatureLabel.setText("Ambient Temperature: " + this.home.getTemperatureComponent().getAmbientTemperature());
+		float ambientTemperature = ((ClimateComponent) home.getComponents("hvac").get(0)).getAmbientTemperature();
+		this.ambientTemperatureLabel.setText("Ambient Temperature: " + ambientTemperature);
 	}
 	
 	/**

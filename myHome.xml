@@ -4,7 +4,7 @@
   <Owner name="Sean Arietta" customerID="HA1342-242" />
   <Location city="Charlottesville" state="VA" zipcode="22903" />
 
-  <HomeComponent class="com.sumerit.hafnium.products.YorkSakaiES3457">
+  <HomeComponent category="hvac" class="com.sumerit.hafnium.products.YorkSakaiES3457">
         <SerialNumber>000128000</SerialNumber>
    </HomeComponent>
     
