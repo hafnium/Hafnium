@@ -1,29 +1,16 @@
 package com.sumerit.hafnium;
 
-import java.net.URI;
-import java.net.URL;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -31,12 +18,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Slider;
 import org.eclipse.swt.widgets.ToolBar;
-import org.eclipse.swt.widgets.ToolItem;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Event;
 
-import com.sumerit.hafnium.components.HomeComponent;
-import com.sumerit.hafnium.products.RuddOptiply2000;
 import com.sumerit.hafnium.products.YorkSakaiES3457;
 import com.sumerit.hafnium.ui.NavigationBar;
 import com.sumerit.hafnium.util.HafniumFileLoader;
@@ -44,10 +26,6 @@ import com.sumerit.hafnium.util.ImageLoader;
 import com.sumerit.hafnium.util.LocalWeather;
 import com.sumerit.hafnium.util.TemperatureFormatter;
 import com.sumerit.hafnium.util.TemperatureFormatter.TemperatureScale;
-import com.sun.syndication.feed.synd.SyndEntryImpl;
-import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.io.SyndFeedInput;
-import com.sun.syndication.io.XmlReader;
 
 import com.cloudgarden.resource.SWTResourceManager;
 
@@ -97,7 +75,6 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 	private Home home;
 	
 	private YorkSakaiES3457 myAC;
-	private RuddOptiply2000 myHeater;
 	private String degreeSymbol = new String(Character.toChars(176));
 	private Composite componentContainer;
 

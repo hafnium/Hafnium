@@ -1,12 +1,8 @@
 package com.sumerit.hafnium.simulator;
 
-import java.sql.Time;
-
 public class Environment 
 {
 	private static float ambientTemperature = 70.0f;
-	private static Time timeofDay;
-	private static float soundLevel;
 	
 	public static float getAmbientTemperature()
 	{

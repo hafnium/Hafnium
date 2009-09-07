@@ -1,17 +1,11 @@
 package com.sumerit.hafnium.util;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Vector;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 import com.sumerit.hafnium.Location;
 import com.sumerit.hafnium.Owner;
@@ -119,8 +113,7 @@ public class HafniumFileLoader
 
 		HomeComponent component = null;
 		try {
-			Class C = Class.forName(type);
-			component = (HomeComponent) C.newInstance();
+			component = (HomeComponent) Class.forName(type).newInstance();
 			component.initialize(serial);
 		} catch (Exception e)
 		{

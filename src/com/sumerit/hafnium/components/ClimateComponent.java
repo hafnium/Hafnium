@@ -1,20 +1,14 @@
 package com.sumerit.hafnium.components;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Slider;
 
 import com.cloudgarden.resource.SWTResourceManager;
-import com.sumerit.hafnium.devices.ClimateController;
 import com.sumerit.hafnium.devices.TemperatureSampler;
 
 
@@ -128,10 +122,13 @@ public abstract class ClimateComponent extends HomeComponent
 		return temperatureSampler.sampleAmbientTemperature();
 	}
 	
-	private void temperatureSliderMouseUp(MouseEvent evt) {
+	private void temperatureSliderMouseUp(MouseEvent evt) 
+	{
+		this.temperatureSetting = Math.round(((Slider) evt.getSource()).getSelection());
 		try
 		{
-			adjustTemperature(Math.round(((Slider) evt.getSource()).getSelection()));
+			this.temperatureValue.setText(this.temperatureSetting + ClimateComponent.degreeSymbol + "F");
+			adjustTemperature(this.temperatureSetting);
 		} catch(Exception e) { 
 			System.out.println(e.getMessage());
 		}

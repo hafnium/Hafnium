@@ -27,7 +27,7 @@ public class YorkSakaiES3457 extends AirConditioner
 			Thread bg = new Thread(){
 				public void run()
 				{
-					while (temperatureSampler.sampleAmbientTemperature() != targetTemperature)
+					while (temperatureSampler.sampleAmbientTemperature() > targetTemperature)
 					{
 						Environment.lowerTemperature();
 					}
