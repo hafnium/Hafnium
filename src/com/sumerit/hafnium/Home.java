@@ -2,6 +2,7 @@ package com.sumerit.hafnium;
 
 import java.util.Vector;
 
+import com.sumerit.hafnium.components.ClimateComponent;
 import com.sumerit.hafnium.components.HomeComponent;
 import com.sumerit.hafnium.util.HafniumFileLoader;
 
@@ -9,6 +10,7 @@ public class Home
 {	
 	private Vector<HomeComponent> components;
 	private Owner owner;
+	private ClimateComponent temperatureComponent;
 		
 	private Location location;
 	
@@ -19,6 +21,17 @@ public class Home
 		this.owner = HafniumFileLoader.loadOwner(path);
 		this.location = HafniumFileLoader.loadLocation(path);
 		this.components = HafniumFileLoader.loadComponents(path);
+		
+		for (int i = 0; i < components.size(); i++)
+		{
+			if (ClimateComponent.class.isAssignableFrom(components.get(i).getClass()))
+				this.temperatureComponent = (ClimateComponent) components.get(i);
+		}
+	}
+	
+	public ClimateComponent getTemperatureComponent()
+	{
+		return this.temperatureComponent;
 	}
 	
 	public void setComponents(Vector<HomeComponent> components)

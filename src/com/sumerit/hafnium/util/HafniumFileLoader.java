@@ -112,8 +112,6 @@ public class HafniumFileLoader
 		//for each <employee> element get text or int values of 
 		//name ,id, age and name
 		int serial = XMLParser.getIntValue(element,"SerialNumber");
-		String make = XMLParser.getTextValue(element,"Make");
-		String model = XMLParser.getTextValue(element,"Model");
 
 		String type = element.getAttribute("class");
 		
@@ -123,7 +121,7 @@ public class HafniumFileLoader
 		try {
 			Class C = Class.forName(type);
 			component = (HomeComponent) C.newInstance();
-			component.initialize(serial, make, model);
+			component.initialize(serial);
 		} catch (Exception e)
 		{
 			e.printStackTrace();

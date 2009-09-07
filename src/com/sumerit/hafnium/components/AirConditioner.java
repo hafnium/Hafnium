@@ -1,6 +1,6 @@
 package com.sumerit.hafnium.components;
 
-import org.eclipse.swt.widgets.Composite;
+import com.sumerit.hafnium.devices.ClimateController;
 
 /**
  * Class that all air conditioners should extend. Provides functionality to set the temperature.
@@ -34,8 +34,11 @@ public abstract class AirConditioner extends ClimateComponent
 	 * 
 	 *  @throws RuntimeException if the AC's condensor is frozen
 	 */
-	public void setTemperature(float targetTemperature) throws InterruptedException, RuntimeException 
+	public void adjustTemperature(float targetTemperature)
 	{
+		if (!this.isPoweredOn)
+			throw new RuntimeException("Device is off");
+		
 		if (targetTemperature >= this.getAmbientTemperature())
 		{
 			this.setStatusMessage("Target temperature is greater than or equal to current temperature", HomeComponent.LogLevel.WARNING);
@@ -51,7 +54,7 @@ public abstract class AirConditioner extends ClimateComponent
 		if (condensorState == CondensorState.PARTIALLY_FROZEN)
 			this.setStatusMessage("Condensor coil is partially frozen", HomeComponent.LogLevel.WARNING);
 		
-		super.setTemperature(targetTemperature);			
+		((ClimateController) this.controller).lowerTemperature(targetTemperature);		
 	}	
 
 	public CondensorState getCondensorState()

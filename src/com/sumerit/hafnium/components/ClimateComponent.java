@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.widgets.Composite;
@@ -13,7 +14,8 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Slider;
 
 import com.cloudgarden.resource.SWTResourceManager;
-import com.sumerit.hafnium.devices.InternalTemperatureDevice;
+import com.sumerit.hafnium.devices.ClimateController;
+import com.sumerit.hafnium.devices.TemperatureSampler;
 
 
 /**
@@ -33,12 +35,10 @@ import com.sumerit.hafnium.devices.InternalTemperatureDevice;
  * @author Sean Arietta
  *
  */
-public abstract class ClimateComponent extends HomeComponent implements ActionListener
+public abstract class ClimateComponent extends HomeComponent
 {		
 	private float temperatureSetting;
-	private float ambientTemperature;
-	private ActionListener temperatureListener = null;
-	InternalTemperatureDevice temperatureController;
+	protected TemperatureSampler temperatureSampler;
 	
 	protected Composite mainContentContainer;
 	private Label temperatureLabel;
@@ -46,6 +46,8 @@ public abstract class ClimateComponent extends HomeComponent implements ActionLi
 	private Label sliderLabel;
 	private Slider temperatureSlider;
 	private Label adjustTemperatureLabel;
+	
+	public static final String degreeSymbol = new String(Character.toChars(176));
 
 	public ClimateComponent()
 	{
@@ -61,13 +63,50 @@ public abstract class ClimateComponent extends HomeComponent implements ActionLi
 	public ClimateComponent(int serialNumber, String make, String model) 
 	{
 		super(serialNumber, make, model);
-		ambientTemperature = 70.0f;
-		temperatureController = new InternalTemperatureDevice();
-		temperatureController.addActionListener(this);
 	}
 	
-	public void initGUI( )
+	public void add(Composite mainContentContainer, Point position)
 	{
+		super.add(mainContentContainer, position);
+		{
+			temperatureSlider = new Slider(componentContainer, SWT.NONE);
+			temperatureSlider.setBounds(488, 58, 192, 24);
+			temperatureSlider.setMinimum(30);
+			temperatureSlider.setMaximum(80);
+			temperatureSlider.setIncrement(1);
+			temperatureSlider.setSelection(70);
+			temperatureSlider.setThumb(1);
+			temperatureSlider.addMouseListener(new MouseAdapter() {
+				public void mouseUp(MouseEvent evt) {
+					temperatureSliderMouseUp(evt);
+				}
+			});
+		}
+		{
+			sliderLabel = new Label(componentContainer, SWT.NONE);
+			sliderLabel.setText("30    40    50    60    70    80");
+			sliderLabel.setBounds(498, 38, 170, 16);
+			sliderLabel.setFont(SWTResourceManager.getFont("Gill Sans MT", 10, 1, false, false));
+		}
+		{
+			adjustTemperatureLabel = new Label(componentContainer, SWT.NONE);
+			adjustTemperatureLabel.setText("Adjust Temperature");
+			adjustTemperatureLabel.setBounds(510, 88, 155, 25);
+			adjustTemperatureLabel.setFont(SWTResourceManager.getFont("Gill Sans MT", 12, 1, false, false));
+		}
+		{
+			temperatureLabel = new Label(componentContainer, SWT.NONE);
+			temperatureLabel.setText("Current Temperature Setting:");
+			temperatureLabel.setBounds(80, 107, 231, 27);
+			temperatureLabel.setFont(SWTResourceManager.getFont("Gill Sans MT", 12, 1, false, false));
+		}
+		{
+			temperatureValue = new Label(componentContainer, SWT.NONE);
+			temperatureValue.setText("70" + ClimateComponent.degreeSymbol);
+			temperatureValue.setBounds(316, 109, 64, 23);
+			temperatureValue.setForeground(SWTResourceManager.getColor(128, 128, 128));
+			temperatureValue.setFont(SWTResourceManager.getFont("Gill Sans MT", 12, 1, false, false));
+		}
 	}
 	
 	/**
@@ -77,16 +116,7 @@ public abstract class ClimateComponent extends HomeComponent implements ActionLi
 	 * @throws InterruptedException
 	 * @throws RuntimeException if the device is not powered on
 	 */
-	public void setTemperature(float targetTemperature) throws InterruptedException, RuntimeException
-	{	
-		if (!this.isPoweredOn())
-		{
-			this.setStatusMessage("Attempted to adjust temperature while device was off", HomeComponent.LogLevel.WARNING);
-			throw new RuntimeException("Device has been turned off");
-		}
-		
-		temperatureController.adjustTemperature(ambientTemperature, targetTemperature);
-	}
+	public abstract void adjustTemperature(float targetTemperature);
 	
 	public float getTemperatureSetting()
 	{
@@ -95,42 +125,13 @@ public abstract class ClimateComponent extends HomeComponent implements ActionLi
 	
 	public float getAmbientTemperature()
 	{
-		return this.ambientTemperature;
-	}
-	
-	/**
-	 * Receives events that the {@link InternalTemperatureDevice} sends to it. Will react to a temperature 
-	 * change and a temperature set event.
-	 */
-	public void actionPerformed(ActionEvent e) 
-	{
-		if (e.getID() == InternalTemperatureDevice.TEMPERATURE_SET)
-		{
-			this.temperatureSetting = Float.parseFloat(e.getActionCommand());
-			this.setStatusMessage("Temperature set to " + this.getTemperatureSetting(), HomeComponent.LogLevel.INFO);
-			
-			if (temperatureListener != null)
-				this.temperatureListener.actionPerformed(e);
-		} else if (e.getID() == InternalTemperatureDevice.TEMPERATURE_CHANGE)
-		{
-			this.ambientTemperature = Float.parseFloat(e.getActionCommand());
-			this.setStatusMessage("Temperature changed to " + this.getAmbientTemperature(), HomeComponent.LogLevel.INFO);
-		}
-	}
-	
-	/**
-	 * Add a listener that wants to be notified when the temperature is finally set to the desired temperature
-	 * @param listener
-	 */
-	public void addChangeTemperatureListener(ActionListener listener)
-	{
-		this.temperatureListener = listener;
+		return temperatureSampler.sampleAmbientTemperature();
 	}
 	
 	private void temperatureSliderMouseUp(MouseEvent evt) {
 		try
 		{
-			setTemperature(Math.round(((Slider) evt.getSource()).getSelection()));
+			adjustTemperature(Math.round(((Slider) evt.getSource()).getSelection()));
 		} catch(Exception e) { 
 			System.out.println(e.getMessage());
 		}

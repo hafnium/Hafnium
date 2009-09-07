@@ -1,51 +1,24 @@
 package com.sumerit.hafnium;
 
-import java.net.URI;
-import java.net.URL;
-import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Device;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Slider;
 import org.eclipse.swt.widgets.ToolBar;
-import org.eclipse.swt.widgets.ToolItem;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Event;
 
-import com.sumerit.hafnium.components.HomeComponent;
-import com.sumerit.hafnium.components.RuddHeater;
-import com.sumerit.hafnium.components.YorkAirConditioner;
 import com.sumerit.hafnium.ui.NavigationBar;
-import com.sumerit.hafnium.util.HafniumFileLoader;
 import com.sumerit.hafnium.util.ImageLoader;
 import com.sumerit.hafnium.util.LocalWeather;
-import com.sumerit.hafnium.util.TemperatureFormatter;
-import com.sumerit.hafnium.util.TemperatureFormatter.TemperatureScale;
-import com.sun.syndication.feed.synd.SyndEntryImpl;
-import com.sun.syndication.feed.synd.SyndFeed;
-import com.sun.syndication.io.SyndFeedInput;
-import com.sun.syndication.io.XmlReader;
 
 import com.cloudgarden.resource.SWTResourceManager;
 
@@ -103,6 +76,12 @@ public class UI extends org.eclipse.swt.widgets.Composite {
 		home.getComponents().get(0).add(this.mainContentContainer, new Point(44, 179));
 		
 		this.pack();
+	}
+	
+	public void update()
+	{
+		if (home.getTemperatureComponent() != null)
+			this.ambientTemperatureLabel.setText("Ambient Temperature: " + this.home.getTemperatureComponent().getAmbientTemperature());
 	}
 	
 	/**
@@ -220,6 +199,13 @@ public class UI extends org.eclipse.swt.widgets.Composite {
 					currentWeatherAdditional.setBounds(11, 202, 166, 47);
 					currentWeatherAdditional.setAlignment(SWT.CENTER);
 				}
+				
+				LocalWeather localWeather = new LocalWeather(home.getLocation().getZipcode());		
+				
+				currentWeatherTemperature.setText("" + localWeather.getTemperature() + degreeSymbol + "F");    
+				currentWeatherIcon.setImage(localWeather.getCurrentImage(this.getDisplay()));
+				currentWeatherAdditional.setText("Today's High: " + localWeather.getHighTemperature() + "\nPrecipitation: " + localWeather.getPrecipitation() + "%");
+			
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

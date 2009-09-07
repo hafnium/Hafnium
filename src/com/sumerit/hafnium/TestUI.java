@@ -36,8 +36,8 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Event;
 
 import com.sumerit.hafnium.components.HomeComponent;
-import com.sumerit.hafnium.components.RuddHeater;
-import com.sumerit.hafnium.components.YorkAirConditioner;
+import com.sumerit.hafnium.products.RuddOptiply2000;
+import com.sumerit.hafnium.products.YorkSakaiES3457;
 import com.sumerit.hafnium.ui.NavigationBar;
 import com.sumerit.hafnium.util.HafniumFileLoader;
 import com.sumerit.hafnium.util.ImageLoader;
@@ -96,8 +96,8 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 	
 	private Home home;
 	
-	private YorkAirConditioner myAC;
-	private RuddHeater myHeater;
+	private YorkSakaiES3457 myAC;
+	private RuddOptiply2000 myHeater;
 	private String degreeSymbol = new String(Character.toChars(176));
 	private Composite componentContainer;
 
@@ -253,11 +253,6 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 						temperatureSlider.setIncrement(1);
 						temperatureSlider.setSelection(70);
 						temperatureSlider.setThumb(1);
-						temperatureSlider.addMouseListener(new MouseAdapter() {
-							public void mouseUp(MouseEvent evt) {
-								temperatureSliderMouseUp(evt);
-							}
-						});
 					}
 					{
 						sliderLabel = new Label(componentContainer, SWT.NONE);
@@ -294,7 +289,7 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 					ambientTemperatureLabel.setAlignment(SWT.CENTER);
 				}				
 				{
-					myAC = new YorkAirConditioner(128, "Sakai", "ES354");
+					myAC = new YorkSakaiES3457(128);
 					//myAC.setBounds(60, 200, 640, 180);
 				}
 			}
@@ -445,18 +440,6 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 			powerValues[index].setText("Off");
 			powerValues[0].setForeground(SWTResourceManager.getColor(255, 0, 0));
 		}
-	}
-	
-	private void temperatureSliderMouseUp(MouseEvent evt) {
-		//System.out.println("temperatureSlider.mouseUp, event="+evt);
-		//TODO add your code for temperatureSlider.mouseUp
-		try
-		{
-			myAC.setTemperature(Math.round(((Slider) evt.getSource()).getSelection()));
-		} catch(Exception e) { 
-			System.out.println(e.getMessage());
-		}
-		
 	}
 
 }

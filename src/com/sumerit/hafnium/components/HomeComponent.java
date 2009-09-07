@@ -11,6 +11,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import com.cloudgarden.resource.SWTResourceManager;
+import com.sumerit.hafnium.devices.Controller;
 import com.sumerit.hafnium.util.ImageLoader;
 
 
@@ -48,9 +49,9 @@ public abstract class HomeComponent
 	protected boolean isGrounded;
 	private String statusMessage;
 	
-	private int serialNumber;
-	private String make = "";
-	private String model;
+	protected int serialNumber;
+	protected String make = "";
+	protected String model;
 	private Label energyLabel;
 	private Label energyValue;
 	private Label nameLabel;
@@ -61,6 +62,8 @@ public abstract class HomeComponent
 	private Label icon;
 	
 	protected Composite componentContainer;
+	
+	protected Controller controller;
 	
 	public HomeComponent(){}
 	
@@ -87,7 +90,7 @@ public abstract class HomeComponent
 		{
 			icon = new Label(componentContainer, SWT.NONE);
 			icon.setBounds(5, 13, 58, 178);
-			icon.setImage(ImageLoader.load(mainContentContainer.getDisplay(), "resources/componentIcons/"+make+model+".png"));
+			icon.setImage(ImageLoader.load(mainContentContainer.getDisplay(), "resources/componentIcons/"+(make+model).replace(" ", "")+".png"));
 		}
 		
 		// STATIC:: Power
@@ -146,12 +149,7 @@ public abstract class HomeComponent
 		}
 	}
 	
-	public void initialize(int serialNumber, String make, String model)
-	{
-		this.serialNumber = serialNumber;
-		this.make = make;
-		this.model = model;
-	}
+	public abstract void initialize(int serialNumber);
 	
 	/**
 	 * Check to see if device is powered on
@@ -241,13 +239,25 @@ public abstract class HomeComponent
 	 * Turn the device on. This should be overridden by the leaf classes in the hierarchy as 
 	 * they will need to make calls to the actual hardware.
 	 */
-	public abstract void powerOn();
+	public void powerOn() 
+	{
+		// Make call to actual hardware
+		this.setStatusMessage(this.getMake() + " " + this.getModel() + " AC powering on", HomeComponent.LogLevel.INFO);
+		this.isPoweredOn = true;
+		this.controller.powerOn();
+	}
 	
 	/**
 	 * Turn the device off. This should be overridden by the leaf classes in the hierarchy as 
 	 * they will need to make calls to the actual hardware.
 	 */
-	public abstract void powerOff();	
+	public void powerOff() 
+	{
+		// Make call to actual hardware
+		this.setStatusMessage(this.getMake() + " " + this.getModel() + " AC powering off", HomeComponent.LogLevel.INFO);
+		this.isPoweredOn = false;
+		this.controller.powerOff();
+	}	
 	
 	public void setIcon(){}
 	

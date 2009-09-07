@@ -20,8 +20,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Slider;
 import org.eclipse.swt.widgets.Text;
 
-import com.sumerit.hafnium.components.RuddHeater;
-import com.sumerit.hafnium.components.YorkAirConditioner;
+import com.sumerit.hafnium.products.RuddOptiply2000;
+import com.sumerit.hafnium.products.YorkSakaiES3457;
 import com.sun.syndication.feed.synd.SyndEntryImpl;
 import com.sun.syndication.feed.synd.SyndFeed;
 import com.sun.syndication.io.SyndFeedInput;
@@ -29,8 +29,8 @@ import com.sun.syndication.io.XmlReader;
 
 public class TestDriver implements Runnable, ActionListener 
 {
-	private YorkAirConditioner myAC;
-	private RuddHeater myHeater;
+	private YorkSakaiES3457 myAC;
+	private RuddOptiply2000 myHeater;
 	
 	private Text heatMeter;
 	private Text acMeter;
@@ -116,11 +116,9 @@ public class TestDriver implements Runnable, ActionListener
 		
 		if (true)
 		{
-			myAC = new YorkAirConditioner(128, "Sakai", "ES354");		
-			myAC.addChangeTemperatureListener(this);
+			myAC = new YorkSakaiES3457(128);		
 			
-			myHeater = new RuddHeater(128, "Optiply 2000");
-			myHeater.addChangeTemperatureListener(this);
+			myHeater = new RuddOptiply2000(128);
 			
 			myAC.powerOn();
 			myHeater.powerOn();						
@@ -157,19 +155,6 @@ public class TestDriver implements Runnable, ActionListener
 			Slider heaterControl = new Slider(mainWindow, SWT.HORIZONTAL);
 			heaterControl.setLayoutData(gridData);
 			heaterControl.setValues((int) myHeater.getAmbientTemperature(), 50, 95, 1, 1, 5);
-			heaterControl.addSelectionListener(new SelectionListener() {
-				public void widgetDefaultSelected(SelectionEvent e) {				
-				}
-				public void widgetSelected(SelectionEvent e) 
-				{
-					try {
-						myHeater.setTemperature(((Slider) e.getSource()).getSelection());
-					} catch (Exception e1) {
-						System.out.println("ERROR: " + e1.getMessage());
-					} 
-				}
-				
-			});
 			
 			Text acControlText = new Text(mainWindow, SWT.READ_ONLY | SWT.SINGLE);
 			acControlText.setText("AC Adjustment");			
@@ -177,19 +162,6 @@ public class TestDriver implements Runnable, ActionListener
 			Slider acControl = new Slider(mainWindow, SWT.HORIZONTAL);
 			acControl.setLayoutData(gridData);
 			acControl.setValues((int) myAC.getAmbientTemperature(), 50, 95, 1, 1, 5);
-			acControl.addSelectionListener(new SelectionListener() {
-				public void widgetDefaultSelected(SelectionEvent e) {				
-				}
-				public void widgetSelected(SelectionEvent e) 
-				{
-					try {
-						myAC.setTemperature(((Slider) e.getSource()).getSelection());
-					} catch (Exception e1) {
-						System.out.println("ERROR: " + e1.getMessage());
-					} 
-				}
-				
-			});
 		}
 		
 		mainWindow.pack ();
