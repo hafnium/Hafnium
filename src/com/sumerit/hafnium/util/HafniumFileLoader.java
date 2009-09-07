@@ -1,17 +1,11 @@
 package com.sumerit.hafnium.util;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Vector;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
-import org.xml.sax.SAXException;
 
 import com.sumerit.hafnium.Location;
 import com.sumerit.hafnium.Owner;
@@ -112,8 +106,6 @@ public class HafniumFileLoader
 		//for each <employee> element get text or int values of 
 		//name ,id, age and name
 		int serial = XMLParser.getIntValue(element,"SerialNumber");
-		String make = XMLParser.getTextValue(element,"Make");
-		String model = XMLParser.getTextValue(element,"Model");
 
 		String type = element.getAttribute("class");
 		
@@ -121,9 +113,8 @@ public class HafniumFileLoader
 
 		HomeComponent component = null;
 		try {
-			Class C = Class.forName(type);
-			component = (HomeComponent) C.newInstance();
-			component.initialize(serial, make, model);
+			component = (HomeComponent) Class.forName(type).newInstance();
+			component.initialize(serial);
 		} catch (Exception e)
 		{
 			e.printStackTrace();

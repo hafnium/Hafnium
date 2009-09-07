@@ -1,11 +1,16 @@
 package com.sumerit.hafnium.components;
 
-import org.eclipse.swt.widgets.Composite;
+import com.sumerit.hafnium.devices.ClimateController;
 
 public abstract class Heater extends ClimateComponent 
 {
 	private enum ExchangerState {OPERATIONAL, OVERHEATED};
 	private ExchangerState exchangerState;
+	
+	public Heater()
+	{
+		super();
+	}
 	
 	/**
 	 * Create a heater device with the provided serial number, make, and model
@@ -24,21 +29,20 @@ public abstract class Heater extends ClimateComponent
 	 * 
 	 *  @throws RuntimeException if the heater's exchanger is frozen
 	 */
-	public void setTemperature(float targetTemperature) throws InterruptedException, RuntimeException 
+	public void adjustTemperature(float targetTemperature)
 	{
-		if (targetTemperature <= this.getAmbientTemperature())
+		if (targetTemperature >= this.getAmbientTemperature())
 		{
-			this.setStatusMessage("Target temperature is less than or equal to current temperature", HomeComponent.LogLevel.WARNING);
+			this.setStatusMessage("Target temperature is greater than or equal to current temperature", HomeComponent.LogLevel.WARNING);
 			return;
 		}
 		
 		if (exchangerState == ExchangerState.OVERHEATED)
 		{
-			this.setStatusMessage("Heat exchanger is overheated", HomeComponent.LogLevel.SEVERE);
-			throw new RuntimeException("Heat exchanger is overheated");
+			this.setStatusMessage("Condensor coil is frozen", HomeComponent.LogLevel.SEVERE);
+			throw new RuntimeException("Condensor coil is frozen");
 		}
 		
-		super.setTemperature(targetTemperature);			
-	}	
-
+		((ClimateController) this.controller).raiseTemperature(targetTemperature);		
+	}
 }

@@ -1,14 +1,26 @@
 package com.sumerit.hafnium;
 
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.Device;
+import org.eclipse.swt.graphics.Point;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.*;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.ToolBar;
+
+import com.sumerit.hafnium.ui.NavigationBar;
+import com.sumerit.hafnium.util.ImageLoader;
+import com.sumerit.hafnium.util.LocalWeather;
+
+import com.cloudgarden.resource.SWTResourceManager;
 
 
 /**
@@ -23,85 +35,219 @@ import org.eclipse.swt.widgets.*;
 * THIS MACHINE, SO JIGLOO OR THIS CODE CANNOT BE USED
 * LEGALLY FOR ANY CORPORATE OR COMMERCIAL PURPOSE.
 */
-public class UI 
-{
-	public static void main (String [] args) 
+public class UI extends org.eclipse.swt.widgets.Composite {
+	private Composite sideBarContainer;
+	private Composite headerContainer;
+	private Label currentWeatherLabel;
+	private Label ambientTemperatureLabel;
+	private ToolBar mainNavigation;
+	private Label currentWeatherAdditional;
+	private Label currentWeatherTemperature;
+	private Label currentWeatherIcon;
+	private Label closeButton;
+	private Composite mainContentContainer;
+	private NavigationBar navigation;
+	
+	private static Display display;
+	private Home home;
+	
+	private String degreeSymbol = new String(Character.toChars(176));
+	
 	{
-		Display display = new Display ();
-		final Shell shell = new Shell (display);
-		shell.setText("Shell");
-		FillLayout fillLayout = new FillLayout();
-		fillLayout.marginWidth = 10;
-		fillLayout.marginHeight = 10;
-		shell.setLayout(fillLayout);
+		//Register as a resource user - SWTResourceManager will
+		//handle the obtaining and disposing of resources
+		SWTResourceManager.registerResourceUser(this);
+	}
+	
+	public static Device getGlobalDisplay()
+	{
+		return UI.display;
+	}
 
-		Button open = new Button (shell, SWT.PUSH);
-		open.setText ("Prompt for a String");
-		open.addSelectionListener (new SelectionAdapter () {
-			public void widgetSelected (SelectionEvent e) {
-				final Shell dialog = new Shell (shell, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
-				dialog.setText("Dialog Shell");
-				FormLayout formLayout = new FormLayout ();
-				formLayout.marginWidth = 10;
-				formLayout.marginHeight = 10;
-				formLayout.spacing = 10;
-				dialog.setLayout (formLayout);
-
-				Label label = new Label (dialog, SWT.NONE);
-				label.setText ("Type a String:");
-				FormData data = new FormData ();
-				label.setLayoutData (data);
-
-				Button cancel = new Button (dialog, SWT.PUSH);
-				cancel.setText ("Cancel");
-				data = new FormData ();
-				data.width = 60;
-				data.right = new FormAttachment (100, 0);
-				data.bottom = new FormAttachment (100, 0);
-				cancel.setLayoutData (data);
-				cancel.addSelectionListener (new SelectionAdapter () {
-					public void widgetSelected (SelectionEvent e) {
-						System.out.println("User cancelled dialog");
-						dialog.close ();
-					}
-				});
-
-				final Text text = new Text (dialog, SWT.BORDER);
-				data = new FormData ();
-				data.width = 200;
-				data.left = new FormAttachment (label, 0, SWT.DEFAULT);
-				data.right = new FormAttachment (100, 0);
-				data.top = new FormAttachment (label, 0, SWT.CENTER);
-				data.bottom = new FormAttachment (cancel, 0, SWT.DEFAULT);
-				text.setLayoutData (data);
-
-				Button ok = new Button (dialog, SWT.PUSH);
-				ok.setText ("OK");
-				data = new FormData ();
-				data.width = 60;
-				data.right = new FormAttachment (cancel, 0, SWT.DEFAULT);
-				data.bottom = new FormAttachment (100, 0);
-				ok.setLayoutData (data);
-				ok.addSelectionListener (new SelectionAdapter () {
-					public void widgetSelected (SelectionEvent e) {
-						System.out.println ("User typed: " + text.getText ());
-						dialog.close ();
-					}
-				});
-
-				dialog.setDefaultButton (ok);
-				dialog.pack ();
-				dialog.open ();
+	public UI(Composite parent, int style) 
+	{
+		super(parent, style);
+		home = new Home("myHome.xml");				
+		
+		// Add main components of the UI
+		initGUI();
+		
+		// Add this home's components to the UI
+		home.getComponents().get(0).add(this.mainContentContainer, new Point(44, 179));
+		
+		this.pack();
+	}
+	
+	public void update()
+	{
+		if (home.getTemperatureComponent() != null)
+			this.ambientTemperatureLabel.setText("Ambient Temperature: " + this.home.getTemperatureComponent().getAmbientTemperature());
+	}
+	
+	/**
+	* Initializes the GUI.
+	*/
+	private void initGUI() 
+	{
+		try 
+		{
+			this.setBackground(SWTResourceManager.getColor(192, 192, 192));
+			FormLayout thisLayout = new FormLayout();
+			this.setLayout(thisLayout);
+			this.layout();
+			this.setSize(1024, 768);
+			
+			// Set up the header and the close button that goes on the header
+			{
+				FormData composite1LData = new FormData();
+				composite1LData.width = 1024;
+				composite1LData.height = 120;
+				composite1LData.left =  new FormAttachment(0, 1000, 0);
+				composite1LData.top =  new FormAttachment(0, 1000, 0);
+				headerContainer = new Composite(this, SWT.NONE);
+				headerContainer.setLayout(null);
+				headerContainer.setLayoutData(composite1LData);
+				headerContainer.setBackgroundImage(ImageLoader.load(this.getDisplay(), "resources/header.png"));
+				{
+					closeButton = new Label(headerContainer, SWT.PUSH | SWT.CENTER);
+					closeButton.setLocation(new org.eclipse.swt.graphics.Point(100, 0));
+					closeButton.setBounds(958, -2, 66, 33);
+					closeButton.setImage(ImageLoader.load(this.getDisplay(), "resources/closeIcon.png"));
+					closeButton.addMouseListener(new MouseAdapter() {
+						public void mouseDown(MouseEvent evt) {
+							closeButtonMouseDown(evt);
+						}
+					});
+				}
 			}
-		});
-		shell.pack ();
-		shell.open ();
-		
-		
-		while (!shell.isDisposed ()) {
-			if (!display.readAndDispatch ()) display.sleep ();
+			{
+				FormData mainContentContainerLData = new FormData();
+				mainContentContainerLData.width = 834;
+				mainContentContainerLData.height = 648;
+				mainContentContainerLData.left =  new FormAttachment(0, 1000, 190);
+				mainContentContainerLData.top =  new FormAttachment(0, 1000, 120);
+				mainContentContainer = new Composite(this, SWT.NONE);
+				mainContentContainer.setLayout(null);
+				mainContentContainer.setLayoutData(mainContentContainerLData);
+				mainContentContainer.setBackground(SWTResourceManager.getColor(255, 255, 255));
+				{
+					mainNavigation = new ToolBar(mainContentContainer, SWT.FLAT | SWT.WRAP);
+					mainNavigation.setBounds(0, 0, 835, 85);
+					mainNavigation.setLayoutData(new FillLayout());
+					mainNavigation.setBackground(SWTResourceManager.getColor(239, 239, 239));
+					// Create the navigation tab bar
+					{
+						navigation = new NavigationBar(this.getDisplay());
+						navigation.createNavigationElement(mainNavigation, "resources/navigationIcons/hvac_active.png", "resources/navigationIcons/hvac_inactive.png");
+						navigation.createNavigationElement(mainNavigation, "resources/navigationIcons/lighting_active.png", "resources/navigationIcons/lighting_inactive.png");
+						navigation.createNavigationElement(mainNavigation, "resources/navigationIcons/entertainment_active.png", "resources/navigationIcons/entertainment_inactive.png");
+						navigation.createNavigationElement(mainNavigation, "resources/navigationIcons/security_active.png", "resources/navigationIcons/security_inactive.png");
+						navigation.createNavigationElement(mainNavigation, "resources/navigationIcons/appliances_active.png", "resources/navigationIcons/appliances_inactive.png");
+					}					
+					mainNavigation.pack();
+				}
+
+				{
+					ambientTemperatureLabel = new Label(mainContentContainer, SWT.NONE);
+					ambientTemperatureLabel.setText("Ambient Temperature: 0" + degreeSymbol);
+					ambientTemperatureLabel.setBounds(176, 117, 385, 39);
+					ambientTemperatureLabel.setBackground(SWTResourceManager.getColor(32, 32, 32));
+					ambientTemperatureLabel.setForeground(SWTResourceManager.getColor(255, 255, 255));
+					ambientTemperatureLabel.setFont(SWTResourceManager.getFont("Gill Sans MT", 18, 1, false, false));
+					ambientTemperatureLabel.setAlignment(SWT.CENTER);
+				}
+			}
+			
+			// Set up the sidebar
+			{
+				// Make it look pretty
+				FormData sideBarContainerLData = new FormData();
+				sideBarContainerLData.width = 190;
+				sideBarContainerLData.height = 647;
+				sideBarContainerLData.left =  new FormAttachment(0, 1000, 0);
+				sideBarContainerLData.top =  new FormAttachment(0, 1000, 120);
+				sideBarContainer = new Composite(this, SWT.NONE);
+				sideBarContainer.setLayout(null);
+				sideBarContainer.setLayoutData(sideBarContainerLData);
+				sideBarContainer.setBackgroundImage(ImageLoader.load(this.getDisplay(), "resources/sidebar.png"));
+				
+				// Current weather section
+				{
+					currentWeatherLabel = new Label(sideBarContainer, SWT.NONE);
+					currentWeatherLabel.setText("Current Weather");
+					currentWeatherLabel.setFont(SWTResourceManager.getFont("Gill Sans MT", 13, 1, false, false));
+					currentWeatherLabel.setBounds(13, 24, 161, 25);
+					currentWeatherLabel.setForeground(SWTResourceManager.getColor(51, 51, 51));
+					currentWeatherLabel.setAlignment(SWT.CENTER);
+				}
+				{
+					currentWeatherIcon = new Label(sideBarContainer, SWT.NONE);
+					currentWeatherIcon.setBounds(43, 61, 100, 100);
+					currentWeatherIcon.setSize(93, 93);
+				}
+				{
+					currentWeatherTemperature = new Label(sideBarContainer, SWT.NONE);
+					currentWeatherTemperature.setBounds(17, 160, 160, 43);
+					currentWeatherTemperature.setFont(SWTResourceManager.getFont("Gill Sans MT", 24, 1, false, false));
+					currentWeatherTemperature.setForeground(SWTResourceManager.getColor(51, 51, 51));
+					currentWeatherTemperature.setAlignment(SWT.CENTER);
+				}
+				{
+					currentWeatherAdditional = new Label(sideBarContainer, SWT.NONE);
+					currentWeatherAdditional.setFont(SWTResourceManager.getFont("Gill Sans MT", 8, 1, false, false));
+					currentWeatherAdditional.setForeground(SWTResourceManager.getColor(51, 51, 51));
+					currentWeatherAdditional.setBounds(11, 202, 166, 47);
+					currentWeatherAdditional.setAlignment(SWT.CENTER);
+				}
+				
+				LocalWeather localWeather = new LocalWeather(home.getLocation().getZipcode());		
+				
+				currentWeatherTemperature.setText("" + localWeather.getTemperature() + degreeSymbol + "F");    
+				currentWeatherIcon.setImage(localWeather.getCurrentImage(this.getDisplay()));
+				currentWeatherAdditional.setText("Today's High: " + localWeather.getHighTemperature() + "\nPrecipitation: " + localWeather.getPrecipitation() + "%");
+			
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		display.dispose ();
+	}
+	
+	/**
+	* Auto-generated main method to display this 
+	* org.eclipse.swt.widgets.Composite inside a new Shell.
+	*/
+	public static void main(String[] args) 
+	{
+		display = Display.getDefault();
+		Shell shell = new Shell(display, SWT.NO_TRIM);
+		shell.setBackgroundMode(SWT.INHERIT_DEFAULT);
+		UI inst = new UI(shell, SWT.NULL);
+		Point size = inst.getSize();
+		shell.setLayout(new FillLayout());
+		shell.layout();
+		if(size.x == 0 && size.y == 0) 
+		{
+			inst.pack();
+			shell.pack();
+		} else 
+		{
+			Rectangle shellBounds = shell.computeTrim(0, 0, size.x, size.y);
+			shell.setSize(shellBounds.width, shellBounds.height);
+		}
+		
+		shell.open();
+		while (!shell.isDisposed()) 
+		{
+			if (!display.readAndDispatch())
+			{
+				//display.sleep();
+				inst.update();
+			}
+		}
+	}
+	
+	private void closeButtonMouseDown(MouseEvent evt) {
+		this.getShell().close();
 	}
 
 }
