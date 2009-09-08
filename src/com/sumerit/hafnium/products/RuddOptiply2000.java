@@ -4,6 +4,7 @@ import com.sumerit.hafnium.components.Heater;
 import com.sumerit.hafnium.components.HomeComponent;
 import com.sumerit.hafnium.devices.ClimateController;
 import com.sumerit.hafnium.devices.TemperatureSampler;
+import com.sumerit.hafnium.products.YorkSakaiES3457.YorkSakaiES3457Controller;
 import com.sumerit.hafnium.simulator.Environment;
 
 public class RuddOptiply2000 extends Heater 
@@ -24,10 +25,19 @@ public class RuddOptiply2000 extends Heater
 	{
 		public void lowerTemperature(float targetTemperature){}
 
-		public void raiseTemperature(float targetTemperature) 
+		public void raiseTemperature(final float targetTemperature) 
 		{
-			while (temperatureSampler.sampleAmbientTemperature() != targetTemperature)
-				Environment.raiseTemperature();
+			Thread bg = new Thread(){
+				public void run()
+				{
+					while (temperatureSampler.sampleAmbientTemperature() < targetTemperature)
+					{
+						Environment.raiseTemperature();
+					}
+				}
+			};	
+			
+			bg.start();
 		}
 
 		public void powerOff() {}
@@ -45,20 +55,9 @@ public class RuddOptiply2000 extends Heater
 	{
 		super(serialNumber, "Rudd Optiply", "2000");
 		this.temperatureSampler = new RuddOptiply2000Sampler();
-	}
-	
-	public void powerOff() 
-	{
-		// Make call to actual hardware
-		this.setStatusMessage(this.getMake() + " " + this.getModel() + " Heater powering off", HomeComponent.LogLevel.INFO);
-		this.isPoweredOn = false;
-	}
-
-	public void powerOn() 
-	{
-		// Make call to actual hardware
-		this.setStatusMessage(this.getMake() + " " + this.getModel() + " Heater powering on", HomeComponent.LogLevel.INFO);
-		this.isPoweredOn = true;
+		
+		if (this.controller == null)
+			this.controller = new RuddOptiply2000Controller();
 	}
 
 	public void initialize(int serialNumber) 
@@ -66,5 +65,8 @@ public class RuddOptiply2000 extends Heater
 		this.serialNumber = serialNumber;
 		this.make = "Rudd Optiply";
 		this.model = "2000";
+		
+		if (this.controller == null)
+			this.controller = new RuddOptiply2000Controller();
 	}
 }

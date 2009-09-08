@@ -37,16 +37,21 @@ public abstract class AirConditioner extends ClimateComponent
 	public void adjustTemperature(float targetTemperature)
 	{
 		if (!this.isPoweredOn)
+		{
+			this.resetTemperatureSetting();	
 			throw new RuntimeException("Device is off");
+		}
 		
 		if (targetTemperature >= this.getAmbientTemperature())
 		{
+			this.resetTemperatureSetting();
 			this.setStatusMessage("Target temperature is greater than or equal to current temperature", HomeComponent.LogLevel.WARNING);
 			return;
 		}
 		
 		if (condensorState == CondensorState.FROZEN)
 		{
+			this.resetTemperatureSetting();
 			this.setStatusMessage("Condensor coil is frozen", HomeComponent.LogLevel.SEVERE);
 			throw new RuntimeException("Condensor coil is frozen");
 		}

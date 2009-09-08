@@ -7,5 +7,8 @@
   <HomeComponent category="hvac" class="com.sumerit.hafnium.products.YorkSakaiES3457">
         <SerialNumber>000128000</SerialNumber>
    </HomeComponent>
-    
+    <HomeComponent category="hvac" class="com.sumerit.hafnium.products.RuddOptiply2000">
+        <SerialNumber>0001282310</SerialNumber>
+   </HomeComponent>
+	
 </Home>

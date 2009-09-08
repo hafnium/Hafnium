@@ -1,5 +1,7 @@
 package com.sumerit.hafnium;
 
+import java.util.Vector;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
@@ -17,6 +19,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
 
 import com.sumerit.hafnium.components.ClimateComponent;
+import com.sumerit.hafnium.components.HomeComponent;
 import com.sumerit.hafnium.ui.NavigationBar;
 import com.sumerit.hafnium.util.ImageLoader;
 import com.sumerit.hafnium.util.LocalWeather;
@@ -73,8 +76,12 @@ public class UI extends org.eclipse.swt.widgets.Composite {
 		// Add main components of the UI
 		initGUI();
 		
-		// Add this home's components to the UI
-		home.getComponents().get("hvac").get(0).add(this.mainContentContainer, new Point(44, 179));
+		// Add this home's comHomeComponente UI
+		Vector<HomeComponent> hvacComponents = home.getComponents("hvac");
+		for (int i = 0; i < hvacComponents.size(); i++)
+		{
+			hvacComponents.get(i).add(this.mainContentContainer, new Point(44, 179 + 220*i));
+		}
 		
 		this.pack();
 	}
