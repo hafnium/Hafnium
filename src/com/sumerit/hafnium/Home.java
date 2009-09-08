@@ -1,5 +1,6 @@
 package com.sumerit.hafnium;
 
+import java.util.HashMap;
 import java.util.Vector;
 
 import com.sumerit.hafnium.components.ClimateComponent;
@@ -8,9 +9,9 @@ import com.sumerit.hafnium.util.HafniumFileLoader;
 
 public class Home 
 {	
-	private Vector<HomeComponent> components;
+	//private Vector<HomeComponent> components;
+	private HashMap<String, Vector<HomeComponent>> components;
 	private Owner owner;
-	private ClimateComponent temperatureComponent;
 		
 	private Location location;
 	
@@ -20,28 +21,17 @@ public class Home
 	{
 		this.owner = HafniumFileLoader.loadOwner(path);
 		this.location = HafniumFileLoader.loadLocation(path);
-		this.components = HafniumFileLoader.loadComponents(path);
-		
-		for (int i = 0; i < components.size(); i++)
-		{
-			if (ClimateComponent.class.isAssignableFrom(components.get(i).getClass()))
-				this.temperatureComponent = (ClimateComponent) components.get(i);
-		}
+		this.components = HafniumFileLoader.loadComponents(path);		
 	}
 	
-	public ClimateComponent getTemperatureComponent()
-	{
-		return this.temperatureComponent;
-	}
-	
-	public void setComponents(Vector<HomeComponent> components)
-	{
-		this.components = components;
-	}
-	
-	public Vector<HomeComponent> getComponents()
+	public HashMap<String, Vector<HomeComponent>> getComponents()
 	{
 		return this.components;
+	}
+	
+	public Vector<HomeComponent> getComponents(String key)
+	{
+		return this.components.get(key);
 	}
 	
 	public Location getLocation()

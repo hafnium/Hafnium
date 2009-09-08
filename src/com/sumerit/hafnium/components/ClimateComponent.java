@@ -36,9 +36,9 @@ public abstract class ClimateComponent extends HomeComponent
 	
 	protected Composite mainContentContainer;
 	private Label temperatureLabel;
-	private Label temperatureValue;
+	protected Label temperatureValue;
 	private Label sliderLabel;
-	private Slider temperatureSlider;
+	protected Slider temperatureSlider;
 	private Label adjustTemperatureLabel;
 	
 	public static final String degreeSymbol = new String(Character.toChars(176));
@@ -133,5 +133,11 @@ public abstract class ClimateComponent extends HomeComponent
 			System.out.println(e.getMessage());
 		}
 		
+	}
+	
+	protected void resetTemperatureSetting()
+	{
+		this.temperatureSlider.setSelection((int) this.temperatureSampler.sampleAmbientTemperature());
+		this.temperatureValue.setText("" + (int) this.temperatureSampler.sampleAmbientTemperature() + ClimateComponent.degreeSymbol); 		
 	}
 }
