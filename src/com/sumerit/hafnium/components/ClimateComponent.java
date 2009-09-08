@@ -45,7 +45,7 @@ public abstract class ClimateComponent extends HomeComponent
 
 	public ClimateComponent()
 	{
-		super();
+		this(0,"","");
 	}
 	
 	/**
@@ -55,8 +55,9 @@ public abstract class ClimateComponent extends HomeComponent
 	 * @param model
 	 */
 	public ClimateComponent(int serialNumber, String make, String model) 
-	{
+	{		
 		super(serialNumber, make, model);
+		initializeSampler();
 	}
 	
 	public void add(Composite mainContentContainer, Point position)
@@ -111,6 +112,7 @@ public abstract class ClimateComponent extends HomeComponent
 	 * @throws RuntimeException if the device is not powered on
 	 */
 	public abstract void adjustTemperature(float targetTemperature);
+	protected abstract void initializeSampler();
 	
 	public float getTemperatureSetting()
 	{

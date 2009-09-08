@@ -65,7 +65,10 @@ public abstract class HomeComponent
 	
 	protected Controller controller;
 	
-	public HomeComponent(){}
+	public HomeComponent()
+	{
+		this(0, "", "");
+	}
 	
 	/**
 	 * 
@@ -78,6 +81,7 @@ public abstract class HomeComponent
 		this.serialNumber = serialNumber;
 		this.make = make;
 		this.model = model;		
+		initializeController();
 	}
 	
 	public void add(Composite mainContentContainer, Point position)
@@ -147,6 +151,8 @@ public abstract class HomeComponent
 				}
 			});
 		}
+		
+		this.setVisible(false);
 	}
 	
 	public void setVisible(boolean B)
@@ -155,6 +161,7 @@ public abstract class HomeComponent
 	}
 	
 	public abstract void initialize(int serialNumber);
+	protected abstract void initializeController();
 	
 	/**
 	 * Check to see if device is powered on

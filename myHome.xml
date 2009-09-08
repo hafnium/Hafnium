@@ -10,5 +10,7 @@
     <HomeComponent category="hvac" class="com.sumerit.hafnium.products.RuddOptiply2000">
         <SerialNumber>0001282310</SerialNumber>
    </HomeComponent>
-	
+    <HomeComponent category="lighting" class="com.sumerit.hafnium.products.GEMaxLight2000">
+    	<SerialNumber>0023241</SerialNumber></HomeComponent>
+
 </Home>

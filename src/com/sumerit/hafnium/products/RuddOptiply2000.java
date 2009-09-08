@@ -48,16 +48,24 @@ public class RuddOptiply2000 extends Heater
 	
 	public RuddOptiply2000() 
 	{
-		this.temperatureSampler = new RuddOptiply2000Sampler();
+		this(0);
 	}
 	
 	public RuddOptiply2000(int serialNumber)
 	{
-		super(serialNumber, "Rudd Optiply", "2000");
-		this.temperatureSampler = new RuddOptiply2000Sampler();
-		
+		super(serialNumber, "Rudd Optiply", "2000");				
+	}
+	
+	protected void initializeController()
+	{
 		if (this.controller == null)
 			this.controller = new RuddOptiply2000Controller();
+	}
+	
+	protected void initializeSampler()
+	{
+		if (this.temperatureSampler == null)
+			this.temperatureSampler = new RuddOptiply2000Sampler();
 	}
 
 	public void initialize(int serialNumber) 
@@ -65,8 +73,5 @@ public class RuddOptiply2000 extends Heater
 		this.serialNumber = serialNumber;
 		this.make = "Rudd Optiply";
 		this.model = "2000";
-		
-		if (this.controller == null)
-			this.controller = new RuddOptiply2000Controller();
 	}
 }

@@ -7,6 +7,7 @@ import java.util.Vector;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Device;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -16,6 +17,7 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolBar;
@@ -80,13 +82,36 @@ public class UI extends org.eclipse.swt.widgets.Composite implements ActionListe
 		initGUI();
 		
 		// Add this home's comHomeComponente UI
-		Vector<HomeComponent> hvacComponents = home.getComponents("hvac");
-		for (int i = 0; i < hvacComponents.size(); i++)
+		
 		{
-			hvacComponents.get(i).add(this.mainContentContainer, new Point(44, 179 + 220*i));
+			Vector<HomeComponent> hvacComponents = home.getComponents("hvac");
+			for (int i = 0; i < hvacComponents.size(); i++)
+				hvacComponents.get(i).add(this.mainContentContainer, new Point(44, 179 + 220*i));
+		}
+		
+		{
+			Vector<HomeComponent> lightingComponents = home.getComponents("lighting");
+			for (int i = 0; i < lightingComponents.size(); i++)
+				lightingComponents.get(i).add(this.mainContentContainer, new Point(44, 179 + 220*i));
+		}
+		
+		{
+			Vector<HomeComponent> electronicComponents = home.getComponents("electronic");
+			for (int i = 0; i < electronicComponents.size(); i++)
+				electronicComponents.get(i).add(this.mainContentContainer, new Point(44, 179 + 220*i));
+		}
+		
+		{
+			Vector<HomeComponent> securityComponents = home.getComponents("security");
+			for (int i = 0; i < securityComponents.size(); i++)
+				securityComponents.get(i).add(this.mainContentContainer, new Point(44, 179 + 220*i));
 		}
 		
 		this.pack();
+		
+		Event hvacSelection = new Event();
+		hvacSelection.widget = this.mainNavigation.getItem(0);
+		this.navigation.widgetDefaultSelected(new SelectionEvent(hvacSelection));
 	}
 	
 	public void update()

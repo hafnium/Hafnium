@@ -44,19 +44,26 @@ public class YorkSakaiES3457 extends AirConditioner
 		
 	}
 	
+	protected void initializeController()
+	{
+		if (this.controller == null)
+			this.controller = new YorkSakaiES3457Controller();
+	}
+	
+	protected void initializeSampler()
+	{
+		if (this.temperatureSampler == null)
+			this.temperatureSampler = new YorkSakaiES3457Sampler();	
+	}
+	
 	public YorkSakaiES3457() 
 	{
-		this.temperatureSampler = new YorkSakaiES3457Sampler();
+		this(0);
 	}
 	
 	public YorkSakaiES3457(int serialNumber)
 	{
 		super(serialNumber, "York Sakai", "ES3457");
-		if (this.temperatureSampler == null)
-			this.temperatureSampler = new YorkSakaiES3457Sampler();
-		
-		if (this.controller == null)
-			this.controller = new YorkSakaiES3457Controller();
 	}
 	
 	public void initialize(int serialNumber)
@@ -64,8 +71,5 @@ public class YorkSakaiES3457 extends AirConditioner
 		this.serialNumber = serialNumber;
 		this.make = "York Sakai";
 		this.model = "ES3457";
-		
-		if (this.controller == null)
-			this.controller = new YorkSakaiES3457Controller();
 	}
 }
