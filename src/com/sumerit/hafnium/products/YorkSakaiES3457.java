@@ -20,8 +20,7 @@ public class YorkSakaiES3457 extends AirConditioner
 	}
 	
 	public class YorkSakaiES3457Controller implements ClimateController
-	{
-
+	{	
 		public void lowerTemperature(final float targetTemperature) 
 		{
 			Thread bg = new Thread(){

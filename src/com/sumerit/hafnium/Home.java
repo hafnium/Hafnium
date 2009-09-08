@@ -31,7 +31,10 @@ public class Home
 	
 	public Vector<HomeComponent> getComponents(String key)
 	{
-		return this.components.get(key);
+		if (this.components.containsKey(key))
+			return this.components.get(key);
+		else
+			return new Vector<HomeComponent>();
 	}
 	
 	public Location getLocation()

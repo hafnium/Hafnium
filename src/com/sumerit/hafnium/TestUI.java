@@ -152,12 +152,12 @@ public class TestUI extends org.eclipse.swt.widgets.Composite {
 					mainNavigation.setBackground(SWTResourceManager.getColor(239, 239, 239));
 					// Create the navigation tab bar
 					{
-						navigation = new NavigationBar(this.getDisplay());
-						navigation.createNavigationElement(mainNavigation, "resources/navigationIcons/hvac_active.png", "resources/navigationIcons/hvac_inactive.png");
-						navigation.createNavigationElement(mainNavigation, "resources/navigationIcons/lighting_active.png", "resources/navigationIcons/lighting_inactive.png");
-						navigation.createNavigationElement(mainNavigation, "resources/navigationIcons/entertainment_active.png", "resources/navigationIcons/entertainment_inactive.png");
-						navigation.createNavigationElement(mainNavigation, "resources/navigationIcons/security_active.png", "resources/navigationIcons/security_inactive.png");
-						navigation.createNavigationElement(mainNavigation, "resources/navigationIcons/appliances_active.png", "resources/navigationIcons/appliances_inactive.png");
+						navigation = new NavigationBar(this.getDisplay(), this.mainContentContainer);
+						navigation.createNavigationElement(home.getComponents("hvac"), mainNavigation, "resources/navigationIcons/hvac_active.png", "resources/navigationIcons/hvac_inactive.png");
+						navigation.createNavigationElement(home.getComponents("lighting"), mainNavigation, "resources/navigationIcons/lighting_active.png", "resources/navigationIcons/lighting_inactive.png");
+						navigation.createNavigationElement(home.getComponents("entertainment"), mainNavigation, "resources/navigationIcons/entertainment_active.png", "resources/navigationIcons/entertainment_inactive.png");
+						navigation.createNavigationElement(home.getComponents("security"), mainNavigation, "resources/navigationIcons/security_active.png", "resources/navigationIcons/security_inactive.png");
+						navigation.createNavigationElement(home.getComponents("other"), mainNavigation, "resources/navigationIcons/appliances_active.png", "resources/navigationIcons/appliances_inactive.png");
 					}					
 					mainNavigation.pack();
 				}

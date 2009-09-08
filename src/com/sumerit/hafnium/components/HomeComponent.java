@@ -149,6 +149,11 @@ public abstract class HomeComponent
 		}
 	}
 	
+	public void setVisible(boolean B)
+	{
+		componentContainer.setVisible(B);
+	}
+	
 	public abstract void initialize(int serialNumber);
 	
 	/**
