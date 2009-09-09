@@ -12,5 +12,7 @@
    </HomeComponent>
     <HomeComponent category="lighting" class="com.sumerit.hafnium.products.GEMaxLight2000">
     	<SerialNumber>0023241</SerialNumber></HomeComponent>
+    <HomeComponent category="lighting" class="com.sumerit.hafnium.products.LutronLumea600">
+    	<SerialNumber>1000213</SerialNumber></HomeComponent>
 
 </Home>

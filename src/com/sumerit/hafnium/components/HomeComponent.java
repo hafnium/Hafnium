@@ -257,6 +257,9 @@ public abstract class HomeComponent
 		this.setStatusMessage(this.getMake() + " " + this.getModel() + " AC powering on", HomeComponent.LogLevel.INFO);
 		this.isPoweredOn = true;
 		this.controller.powerOn();
+		powerButton.setText("Turn Off");
+		powerValue.setText("On");
+		powerValue.setForeground(SWTResourceManager.getColor(0, 255, 0));
 	}
 	
 	/**
@@ -269,6 +272,9 @@ public abstract class HomeComponent
 		this.setStatusMessage(this.getMake() + " " + this.getModel() + " AC powering off", HomeComponent.LogLevel.INFO);
 		this.isPoweredOn = false;
 		this.controller.powerOff();
+		powerButton.setText("Turn On");
+		powerValue.setText("Off");
+		powerValue.setForeground(SWTResourceManager.getColor(255, 0, 0));
 	}	
 	
 	public void setIcon(){}
@@ -276,18 +282,8 @@ public abstract class HomeComponent
 	private void powerButtonMouseDown(MouseEvent evt, int index) 
 	{
 		if(isPoweredOn)
-		{
 			powerOff( );
-			powerButton.setText("Turn On");
-			powerValue.setText("Off");
-			powerValue.setForeground(SWTResourceManager.getColor(255, 0, 0));
-		}
 		else
-		{
 			powerOn( );
-			powerButton.setText("Turn Off");
-			powerValue.setText("On");
-			powerValue.setForeground(SWTResourceManager.getColor(0, 255, 0));
-		}
 	}
 }
