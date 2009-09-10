@@ -16,6 +16,9 @@ public class LutronLumea600 extends DimmerComponent
 		{
 			
 		}
+
+		public void interruptController() {
+		}
 	}
 	
 	public LutronLumea600()

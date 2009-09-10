@@ -17,6 +17,10 @@ public class GEMaxLight2000 extends LightingComponent
 		{
 			
 		}
+
+		public void interruptController() {
+			
+		}
 		
 	}
 	
