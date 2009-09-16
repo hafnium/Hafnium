@@ -61,7 +61,7 @@ public abstract class HomeComponent
 	private Label powerLabel;
 	private Button powerButton;
 	private Label powerValue;
-	private Label icon;
+	protected Label icon;
 	
 	protected Composite componentContainer;
 	
@@ -258,18 +258,17 @@ public abstract class HomeComponent
 		// Make call to actual hardware
 		this.setStatusMessage(this.getMake() + " " + this.getModel() + " AC powering on", HomeComponent.LogLevel.INFO);
 		
-		controllerThread = new Thread(){
-			public void run()
-			{
-				controller.powerOn();
-				
+//		controllerThread = new Thread(){
+//			public void run()
+//			{
 				isPoweredOn = true;		
-				/*powerButton.setText("Turn Off");
+				controller.powerOn();							
+				powerButton.setText("Turn Off");
 				powerValue.setText("On");
-				powerValue.setForeground(SWTResourceManager.getColor(0, 255, 0));*/
-			}
-		};		
-		controllerThread.start();
+				powerValue.setForeground(SWTResourceManager.getColor(0, 255, 0));
+//			}
+//		};		
+//		controllerThread.start();
 	}
 	
 	/**

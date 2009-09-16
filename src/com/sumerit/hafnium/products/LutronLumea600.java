@@ -6,6 +6,7 @@ import org.eclipse.swt.widgets.Event;
 
 import com.sumerit.hafnium.components.DimmerComponent;
 import com.sumerit.hafnium.devices.LightingController;
+import com.sumerit.hafnium.util.ImageLoader;
 
 public class LutronLumea600 extends DimmerComponent
 {
@@ -17,6 +18,7 @@ public class LutronLumea600 extends DimmerComponent
 			Event fakeDimmer = new Event();
 			fakeDimmer.widget = dimmerSlider;
 			dimmerSliderMouseUp(new MouseEvent(fakeDimmer));
+			icon.setImage(ImageLoader.load(componentContainer.getDisplay(), "resources/componentIcons/"+(make+model).replace(" ", "")+".png"));
 		}
 
 		public void powerOn() 
@@ -25,6 +27,8 @@ public class LutronLumea600 extends DimmerComponent
 			Event fakeDimmer = new Event();
 			fakeDimmer.widget = dimmerSlider;
 			dimmerSliderMouseUp(new MouseEvent(fakeDimmer));
+			
+			icon.setImage(ImageLoader.load(componentContainer.getDisplay(), "resources/componentIcons/"+(make+model).replace(" ", "")+".on.png"));
 		}
 
 		public void interruptController() {

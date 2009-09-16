@@ -2,6 +2,7 @@ package com.sumerit.hafnium.products;
 
 import com.sumerit.hafnium.components.LightingComponent;
 import com.sumerit.hafnium.devices.LightingController;
+import com.sumerit.hafnium.util.ImageLoader;
 
 public class GEMaxLight2000 extends LightingComponent 
 {
@@ -10,12 +11,12 @@ public class GEMaxLight2000 extends LightingComponent
 	{
 		public void powerOff() 
 		{
-			
+			icon.setImage(ImageLoader.load(componentContainer.getDisplay(), "resources/componentIcons/"+(make+model).replace(" ", "")+".png"));
 		}
 
 		public void powerOn() 
 		{
-			
+			icon.setImage(ImageLoader.load(componentContainer.getDisplay(), "resources/componentIcons/"+(make+model).replace(" ", "")+".on.png"));
 		}
 
 		public void interruptController() {

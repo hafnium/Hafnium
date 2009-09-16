@@ -12,6 +12,10 @@ public class SonyCB420 extends SecurityCamera
 		
 		public void powerOnNightVision( ) { }
 		public void powerOffNightVision( ) { }
+		@Override
+		public void interruptController() {
+			
+		}
 	}
 	
 	protected void initializeController()

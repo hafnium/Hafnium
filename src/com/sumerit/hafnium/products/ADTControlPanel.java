@@ -19,6 +19,9 @@ public class ADTControlPanel extends SecurityComponent
 		{
 			
 		}
+		@Override
+		public void interruptController() {
+		}
 	}
 	
 	protected void initializeController()
