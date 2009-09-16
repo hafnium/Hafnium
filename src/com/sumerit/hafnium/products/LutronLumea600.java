@@ -26,6 +26,9 @@ public class LutronLumea600 extends DimmerComponent
 			fakeDimmer.widget = dimmerSlider;
 			dimmerSliderMouseUp(new MouseEvent(fakeDimmer));
 		}
+
+		public void interruptController() {
+		}
 	}
 	
 	public LutronLumea600()

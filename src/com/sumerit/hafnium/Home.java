@@ -3,7 +3,6 @@ package com.sumerit.hafnium;
 import java.util.HashMap;
 import java.util.Vector;
 
-import com.sumerit.hafnium.components.ClimateComponent;
 import com.sumerit.hafnium.components.HomeComponent;
 import com.sumerit.hafnium.util.HafniumFileLoader;
 

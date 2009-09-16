@@ -49,6 +49,8 @@ public abstract class HomeComponent
 	protected boolean isGrounded;
 	private String statusMessage;
 	
+	protected Thread controllerThread;
+	
 	protected int serialNumber;
 	protected String make = "";
 	protected String model;
@@ -255,11 +257,19 @@ public abstract class HomeComponent
 	{
 		// Make call to actual hardware
 		this.setStatusMessage(this.getMake() + " " + this.getModel() + " AC powering on", HomeComponent.LogLevel.INFO);
-		this.isPoweredOn = true;
-		this.controller.powerOn();
-		powerButton.setText("Turn Off");
-		powerValue.setText("On");
-		powerValue.setForeground(SWTResourceManager.getColor(0, 255, 0));
+		
+		controllerThread = new Thread(){
+			public void run()
+			{
+				controller.powerOn();
+				
+				isPoweredOn = true;		
+				/*powerButton.setText("Turn Off");
+				powerValue.setText("On");
+				powerValue.setForeground(SWTResourceManager.getColor(0, 255, 0));*/
+			}
+		};		
+		controllerThread.start();
 	}
 	
 	/**

@@ -14,5 +14,9 @@
     	<SerialNumber>0023241</SerialNumber></HomeComponent>
     <HomeComponent category="lighting" class="com.sumerit.hafnium.products.LutronLumea600">
     	<SerialNumber>1000213</SerialNumber></HomeComponent>
+    <HomeComponent category="security" class="com.sumerit.hafnium.products.SonyCB420">
+    	<SerialNumber>00012003</SerialNumber></HomeComponent>
+    <HomeComponent category="security" class="com.sumerit.hafnium.products.ADTControlPanel">
+    	<SerialNumber>100001564</SerialNumber></HomeComponent>
 
 </Home>

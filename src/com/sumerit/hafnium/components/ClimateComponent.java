@@ -9,6 +9,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Slider;
 
 import com.cloudgarden.resource.SWTResourceManager;
+import com.sumerit.hafnium.devices.ClimateController;
 import com.sumerit.hafnium.devices.TemperatureSampler;
 
 
@@ -43,6 +44,9 @@ public abstract class ClimateComponent extends HomeComponent
 	
 	public static final String degreeSymbol = new String(Character.toChars(176));
 
+	protected abstract void initializeSampler();
+	protected abstract boolean testAdjustTemperature(float targetTemperature);
+	
 	public ClimateComponent()
 	{
 		this(0,"","");
@@ -111,8 +115,38 @@ public abstract class ClimateComponent extends HomeComponent
 	 * @throws InterruptedException
 	 * @throws RuntimeException if the device is not powered on
 	 */
-	public abstract void adjustTemperature(float targetTemperature);
-	protected abstract void initializeSampler();
+	public void adjustTemperature(final float targetTemperature)
+	{
+		if (!this.isPoweredOn)
+		{
+			this.resetTemperatureSetting();	
+			this.setStatusMessage("Device is off", HomeComponent.LogLevel.WARNING);
+			return;
+		}
+		
+		if (this.testAdjustTemperature(targetTemperature))
+		{
+			if (targetTemperature < this.getAmbientTemperature())
+			{
+				controllerThread = new Thread(){
+					public void run()
+					{
+						((ClimateController) controller).lowerTemperature(targetTemperature);	
+					}
+				};
+				controllerThread.start();
+			} else if (targetTemperature > this.getAmbientTemperature())
+			{
+				controllerThread = new Thread(){
+					public void run()
+					{
+						((ClimateController) controller).raiseTemperature(targetTemperature);	
+					}
+				};
+				controllerThread.start();
+			}
+		}
+	}	
 	
 	public float getTemperatureSetting()
 	{

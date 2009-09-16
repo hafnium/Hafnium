@@ -23,26 +23,26 @@ public class RuddOptiply2000 extends Heater
 	
 	public class RuddOptiply2000Controller implements ClimateController
 	{
+		private Thread bg;
+		
 		public void lowerTemperature(float targetTemperature){}
 
 		public void raiseTemperature(final float targetTemperature) 
 		{
-			Thread bg = new Thread(){
-				public void run()
-				{
-					while (temperatureSampler.sampleAmbientTemperature() < targetTemperature)
-					{
-						Environment.raiseTemperature();
-					}
-				}
-			};	
-			
-			bg.start();
+			while (temperatureSampler.sampleAmbientTemperature() < targetTemperature)
+			{
+				Environment.raiseTemperature();
+			}
 		}
 
 		public void powerOff() {}
 
 		public void powerOn() {}
+
+		public void interruptController() 
+		{
+			bg.interrupt();
+		}
 		
 	}
 	
