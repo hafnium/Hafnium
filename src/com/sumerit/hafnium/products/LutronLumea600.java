@@ -1,5 +1,9 @@
 package com.sumerit.hafnium.products;
 
+import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.widgets.Event;
+
 import com.sumerit.hafnium.components.DimmerComponent;
 import com.sumerit.hafnium.devices.LightingController;
 
@@ -9,12 +13,18 @@ public class LutronLumea600 extends DimmerComponent
 	{
 		public void powerOff() 
 		{
-			
+			dimmerSlider.setSelection(0);
+			Event fakeDimmer = new Event();
+			fakeDimmer.widget = dimmerSlider;
+			dimmerSliderMouseUp(new MouseEvent(fakeDimmer));
 		}
 
 		public void powerOn() 
 		{
-			
+			dimmerSlider.setSelection(100);
+			Event fakeDimmer = new Event();
+			fakeDimmer.widget = dimmerSlider;
+			dimmerSliderMouseUp(new MouseEvent(fakeDimmer));
 		}
 	}
 	

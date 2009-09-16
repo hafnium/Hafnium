@@ -85,9 +85,9 @@ public abstract class DimmerComponent extends LightingComponent
 		}
 	}
 	
-	private void dimmerSliderMouseUp(MouseEvent evt) 
+	protected void dimmerSliderMouseUp(MouseEvent evt) 
 	{
-		this.dimmerSetting = Math.round(((Slider) evt.getSource()).getSelection());
+		this.dimmerSetting = Math.round(((Slider) evt.widget).getSelection());
 		try
 		{
 			this.dimmerValue.setText(this.dimmerSetting + percentSymbol);
