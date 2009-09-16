@@ -28,38 +28,26 @@ public abstract class AirConditioner extends ClimateComponent
 		super(serialNumber, make, model);
 	}
 	
-	/**
-	 * Set the temperature. This makes a call to the superclass {@link ClimateComponent} only after 
-	 * checking this device for malfunction.
-	 * 
-	 *  @throws RuntimeException if the AC's condensor is frozen
-	 */
-	public void adjustTemperature(float targetTemperature)
-	{
-		if (!this.isPoweredOn)
-		{
-			this.resetTemperatureSetting();	
-			throw new RuntimeException("Device is off");
-		}
-		
+	public boolean testAdjustTemperature(float targetTemperature)
+	{			
 		if (targetTemperature >= this.getAmbientTemperature())
 		{
 			this.resetTemperatureSetting();
 			this.setStatusMessage("Target temperature is greater than or equal to current temperature", HomeComponent.LogLevel.WARNING);
-			return;
+			return false;
 		}
 		
 		if (condensorState == CondensorState.FROZEN)
 		{
 			this.resetTemperatureSetting();
 			this.setStatusMessage("Condensor coil is frozen", HomeComponent.LogLevel.SEVERE);
-			throw new RuntimeException("Condensor coil is frozen");
+			return false;
 		}
 		
 		if (condensorState == CondensorState.PARTIALLY_FROZEN)
 			this.setStatusMessage("Condensor coil is partially frozen", HomeComponent.LogLevel.WARNING);
 		
-		((ClimateController) this.controller).lowerTemperature(targetTemperature);		
+		return true;
 	}	
 
 	public CondensorState getCondensorState()

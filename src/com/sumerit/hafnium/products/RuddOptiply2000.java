@@ -29,17 +29,10 @@ public class RuddOptiply2000 extends Heater
 
 		public void raiseTemperature(final float targetTemperature) 
 		{
-			bg = new Thread(){
-				public void run()
-				{
-					while (temperatureSampler.sampleAmbientTemperature() < targetTemperature)
-					{
-						Environment.raiseTemperature();
-					}
-				}
-			};	
-			
-			bg.start();
+			while (temperatureSampler.sampleAmbientTemperature() < targetTemperature)
+			{
+				Environment.raiseTemperature();
+			}
 		}
 
 		public void powerOff() {}

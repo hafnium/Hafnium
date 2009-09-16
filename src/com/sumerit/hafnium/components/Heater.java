@@ -29,28 +29,22 @@ public abstract class Heater extends ClimateComponent
 	 * 
 	 *  @throws RuntimeException if the heater's exchanger is frozen
 	 */
-	public void adjustTemperature(float targetTemperature)
+	public boolean testAdjustTemperature(float targetTemperature)
 	{
-		if (!this.isPoweredOn)
-		{
-			this.resetTemperatureSetting();
-			throw new RuntimeException("Device is off");
-		}
-		
 		if (targetTemperature <= this.getAmbientTemperature())
 		{
 			this.resetTemperatureSetting();
 			this.setStatusMessage("Target temperature is less than or equal to current temperature", HomeComponent.LogLevel.WARNING);
-			return;
+			return false;
 		}
 		
 		if (exchangerState == ExchangerState.OVERHEATED)
 		{
 			this.resetTemperatureSetting();
 			this.setStatusMessage("Heat exchanger is overheated", HomeComponent.LogLevel.SEVERE);
-			throw new RuntimeException("Heat exchanger is overheated");
+			return false;
 		}
 		
-		((ClimateController) this.controller).raiseTemperature(targetTemperature);		
+		return true;		
 	}
 }

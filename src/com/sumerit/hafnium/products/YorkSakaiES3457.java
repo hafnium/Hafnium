@@ -21,24 +21,13 @@ public class YorkSakaiES3457 extends AirConditioner
 	
 	public class YorkSakaiES3457Controller implements ClimateController
 	{	
-		private Thread bg = null;
 		
 		public void lowerTemperature(final float targetTemperature) 
-		{
-			if (bg != null)
-				return;
-			
-			bg = new Thread(){
-				public void run()
-				{
-					while (temperatureSampler.sampleAmbientTemperature() > targetTemperature)
-					{
-						Environment.lowerTemperature();
-					}
-				}
-			};	
-			
-			bg.start();
+		{			
+			while (temperatureSampler.sampleAmbientTemperature() > targetTemperature)
+			{
+				Environment.lowerTemperature();
+			}
 		}
 
 		public void raiseTemperature(float targetTemperature) {}
@@ -47,11 +36,7 @@ public class YorkSakaiES3457 extends AirConditioner
 
 		public void powerOn() {}
 
-		@Override
-		public void interruptController() 
-		{
-			this.bg.interrupt();
-		}
+		public void interruptController() {}
 		
 	}
 	
